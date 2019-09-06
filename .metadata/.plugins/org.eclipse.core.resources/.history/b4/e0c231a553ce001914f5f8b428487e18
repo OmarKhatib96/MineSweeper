@@ -1,0 +1,18 @@
+
+public class Demineur {
+    public static void main(String args []){
+    	
+    	Champ C=new Champ();
+    	C.placeMines();
+    	C.affText();
+    	
+    	C.System.out.print();//compiler writes here s1.toString()  
+
+    	
+
+    	
+     	
+    }
+
+
+}

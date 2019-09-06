@@ -1,0 +1,12 @@
+
+public class Demineur {
+    public static void main(String args []){
+    	
+    	Champ C=new Champ();
+    	
+    	
+    	
+    }
+
+
+}

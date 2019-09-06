@@ -1,0 +1,18 @@
+
+public class Champ {
+	final static int NBMINES=5;
+	final static int DIM=5;
+	public static void placeMines ()
+	{
+		
+	}
+	
+	public static void affText()
+	{
+		
+		
+	}
+	
+
+
+}

@@ -1,0 +1,104 @@
+
+import java.util.*;
+
+public class Champ {
+	//Attributs par défauts
+	private final static int NBMINES=3;
+	private final static int DIMEASY=5;
+	private final static int DIMMEDIUM=10;
+	private final static int DIMHARD=20;
+	
+
+	
+	
+	private final String NomParDefaut="GAME";
+	 private String name;
+	private static boolean[][] tabMines;//Tableau représentatif du champs		
+	Random alea=new Random();
+	private  int dim;
+	private  int nbmines;
+	
+					
+		
+	public   void InitialisationChamp(int dimension, int nbrmines)
+	{
+		dim=dimension;
+		nbmines=nbrmines;
+		tabMines=new boolean [dim][dim];
+		placeMines(nbmines);		
+	}
+	
+	
+	
+	public Champ()//constructeur par défaut
+	{
+		
+		this.dim=DIMEASY;
+		this.nbmines=NBMINES;
+		this.name=NomParDefaut;
+		InitialisationChamp(dim,nbmines);
+	}
+
+	
+	public Champ(String name,Level lev)
+	{
+		this.name=name;
+		if (lev.getLevel()==lvl.EASY)
+			InitialisationChamp(10,5);
+		else if(lev.getLevel()==lvl.MEDIUM)
+			InitialisationChamp(20,6);	
+		else if(lev.getLevel()==lvl.HARD)
+			InitialisationChamp(40,26);
+		
+		
+	}
+
+	
+	public  void placeMines(int nbrmines)//Va placer aléatoirement les mines sur le champs
+	{
+		for(int i=0;i<nbrmines;i++)
+		{
+			int x=alea.nextInt(dim);
+			int y=alea.nextInt(dim);
+			tabMines[x][y]=true;//true si la case contient une mines
+			
+		}
+	}
+	
+	public void affText()//Cette méthode va nous afficher notre champs de mines
+	{
+		System.out.println("Notre champs de mines est le suivant:");
+		
+		for(int j=0;j<dim;j++)
+		{
+			for(int i=0;i<dim;i++) {
+				if(tabMines[i][j]==true)//Si présence d'une mine
+					System.out.print("x  ");
+				else//si pas de présence de mines 
+					System.out.print("0  ");
+								
+			}
+        System.out.println();
+		}
+		
+		
+	}
+	
+	
+	public   String toString() {//Surcharge de toString 
+		StringBuilder str = new StringBuilder();
+        str.append("Le nom de notre mine est : ").append(this.name).append("\n");
+        str.append("La taille de notre mines est: ").append(this.dim).append("\n");
+        str.append("Il y a  : ").append(this.nbmines).append(" mines dans notre champ de mines\n ");
+        return str.toString();
+	} 	
+	//Destructeur
+	protected void finalize() throws Throwable
+	{
+		super.finalize();
+	}
+	
+	
+	
+
+}

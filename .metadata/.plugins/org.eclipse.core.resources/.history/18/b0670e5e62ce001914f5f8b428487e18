@@ -1,0 +1,18 @@
+
+public class Level {
+
+	public enum lvl {
+	    HIGH,
+	    MEDIUM,
+	    LOW
+	}
+	
+
+	public Level()//Constructeur par défaut
+	{
+		
+		
+	}
+	
+	
+}

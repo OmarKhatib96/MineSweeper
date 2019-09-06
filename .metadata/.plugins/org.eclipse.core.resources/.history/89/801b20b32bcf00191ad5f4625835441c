@@ -1,0 +1,75 @@
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+public class IHMHello extends JPanel {
+	
+	private JButton =new JButton("Quit") ; 
+/** constructeur
+* @param la classe contenant les traitements
+*/
+ public IHMHello(Demineur Demin) {
+		
+setBackground(Color.cyan);
+
+ImageIcon quitIcon = new ImageIcon("sortieCLR.gif"); // image
+JLabel title = new JLabel("Welcome on board");
+add(title,BorderLayout.NORTH);
+
+
+
+
+
+JPanel panelMines =new JPanel();
+int X=Demin.getChamp().getDimension();
+int Y=Demin.getChamp().getDimension();
+
+panelMines.setLayout(new GridLayout(X,Y));
+
+
+for(int j=0;j<Y;j++)
+	
+		for(int i=0;i<X;i++) 
+			
+			if(Demin.getChamp().Ismin(i, j))
+				panelMines.add(new JLabel("X")); 
+			else
+				panelMines.add(new JLabel(String.valueOf(Demin.getChamp().nbr_mines(i, j))));
+				
+			
+			
+			/*
+			if(Demin.getChamp().getTab()[i][j]==true) //Si présence d'une mine
+				panelMines.add(new JLabel("            X       ")); 		
+			else{//si pas de présence de mines 
+				panelMines.add(new JLabel("            0       "));
+				
+			}*/
+		
+
+
+add(panelMines,BorderLayout.CENTER);
+
+
+//JButton butQuit = new JButton("Quit") ; // bouton quit
+butQuit.setForeground(Color.DARK_GRAY);
+butQuit.setFont(new Font("Papyrus", Font.PLAIN,18));
+
+
+butQuit.addActionListener(new ActionHello(ActionHello.QUIT,Demin));
+add(butQuit,BorderLayout.SOUTH);
+
+
+ 
+ }
+ 
+ 
+ public void actionPerformed(ActionEvent e) {
+	if(e.getSource()==butQuit)
+	 int reponse=JOptionPane.showConfirmDialog(null, "êtes-vous sûrs?","Bye-Bye",JOptionPane.YES_NO_OPTION,JOptionPane.QUESTION_MESSAGE);
+	 if( reponse==JOptionPane.YES_OPTION)
+		 
+		 System.exit(0);
+	 
+	 
+ }
+}

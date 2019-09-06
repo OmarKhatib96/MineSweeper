@@ -1,0 +1,36 @@
+
+public class Level {
+
+	public enum lvl {
+	    HIGH,
+	    MEDIUM,
+	    LOW
+	}
+	
+	private int level;
+	
+	public Level()//Constructeur par défaut
+	{
+		
+		
+	}
+	
+	public Level(int lvl)//Constructeur surchargé
+	{
+		
+	level=lvl;	
+	}
+	
+	public void setLevel(int lvl)//level setter
+	{
+		level=lvl;
+	}
+	public int getLevel()//level getter
+	{
+		
+		return level;
+		
+	}
+	
+	
+}

@@ -1,0 +1,16 @@
+import java.awt.event.* ;
+
+public class ActionHello implements ActionListener {
+public static final int QUIT = 0 ; // constante
+private Demineur appli ; // référence sur l ’appli
+private int type ; // type d ’evt (QUIT/…)
+
+public ActionsHello(int type, Demineur appli) { // constructeur
+this.appli = appli ;
+this.type = type ;
+ }
+ public void actionPerformed(ActionEvent evt) { // aiguillage
+if (type == QUIT)
+ appli.quit();
+ }
+} 

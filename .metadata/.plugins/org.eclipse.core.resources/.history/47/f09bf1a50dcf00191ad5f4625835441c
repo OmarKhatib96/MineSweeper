@@ -1,0 +1,13 @@
+package emse.ismin.demingui;
+
+import javax.swing.JFrame;
+
+public class Main extends JFrame {
+	
+	
+	Main()
+	{
+		JPanel panel= new JPanel();
+	}
+
+}

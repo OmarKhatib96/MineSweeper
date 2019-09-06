@@ -1,0 +1,21 @@
+
+public class Demineur {
+    public static void main(String args []){
+  //Champ crée avec premier constructeur par défaut
+    	Champ C=new Champ();
+    	
+    	C.placeMines();
+    	C.affText();    	
+    	C.toString();//compiler writes here s1.toString()     	
+    	System.out.println(C.toString());//Affichage de C(après surcharge)
+    	
+    	
+    	
+//Champ crée avec le deuxième constructeur
+    	Champ C2=new Champ( 5,6 ,"Mines_Game");    	
+    	System.out.println(C2.toString());//Affichage de C2(après surcharge)
+     	
+    }
+
+
+}

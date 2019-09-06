@@ -1,0 +1,22 @@
+
+public class Champ {
+	final static int NBMINES=5;
+	final static int DIM=5;
+	public static void placeMines ()
+	{
+		for(int i=0;i<NBMINES;i++)
+		{
+			int x=alea.nextInt(DIM);
+			
+		}
+	}
+	
+	public static void affText()
+	{
+		
+		
+	}
+	
+
+
+}

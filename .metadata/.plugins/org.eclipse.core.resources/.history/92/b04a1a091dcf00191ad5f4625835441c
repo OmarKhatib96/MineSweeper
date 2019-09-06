@@ -1,0 +1,88 @@
+
+import java.awt.GridLayout;
+import java.awt.event.* ;
+import javax.swing.* ; 
+
+public class Demineur extends JFrame {
+	
+	
+	private static Level lev;
+	
+	public Demineur()//Constructeur par défaut du Demineur
+	{
+		
+		super("Hello App");
+		IHMHello ihmHello= new IHMHello(this) ;
+		setContentPane(ihmHello) ;
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		pack() ;
+		setVisible(true) ; 
+		//Champ crée avec premier constructeur par défaut
+    	Champ champ=new Champ();    	
+    	//champ.placeMines();
+    	champ.affText();    	
+    	//champ.toString();//compiler writes here s1.toString()     	
+    	System.out.println(champ);//Affichage de C(après surcharge)
+				
+	}
+	
+	public  Demineur(String name,Level lv)//Constructeur surchargé
+	{
+		
+		super("Démineur ISMIN");
+		lev=lv;
+		Champ champ2= new Champ(name,lv); 
+    	champ2.affText();    	
+    	
+		IHMHello gui= new IHMHello(this) ;//Renommer IHMHello à GUi
+		setContentPane(gui) ;//mettre un panel au milieu		
+    	System.out.println(champ2);//Affichage de champ 2(après surcharge)
+    	setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    	 JPanel monPanel = new JPanel() ;
+    	 monPanel.setLayout(new GridLayout(champ2.getDimension(),champ2.getDimension())); 
+    	 
+    	 for(int j=0;j<champ2.getDimension();j++)
+ 		{
+ 			for(int i=0;i<champ2.getDimension();i++) {
+ 				if(champ2.getTab()[i][j]==true)//Si présence d'une mine
+ 					monPanel.add(new JLabel("   X  ")); 					
+ 				else//si pas de présence de mines 
+ 					monPanel.add(new JLabel("   0  "));
+ 			}
+ 		}
+ 								
+    	
+    	 add(monPanel) ; 
+    	pack();
+		setVisible(true) ; 
+		
+	}
+	
+	
+	
+    public static void main(String args [])
+    {
+    	new Demineur();//Constructeur par défaut
+    	Level l=new Level(lvl.EASY);
+    	new Demineur("Mineur game",l);
+    	
+    	//new Demineur(10,5,"Mines_Game");//Constructeur surchargé
+    	
+    }
+  //Destructeur
+  	protected void finalize() throws Throwable
+  	{
+  		super.finalize();
+  	}
+
+  	/** Quit the application */
+  	public void quit() {
+  	System.out.println("Bye-Bye ");
+  	System.exit(0) ;
+  	 } 
+	
+    
+}
+
+
+

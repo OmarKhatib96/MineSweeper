@@ -1,0 +1,11 @@
+
+public class Level {
+
+	public enum lvl {
+	    HIGH,
+	    MEDIUM,
+	    LOW
+	}
+	
+	
+}

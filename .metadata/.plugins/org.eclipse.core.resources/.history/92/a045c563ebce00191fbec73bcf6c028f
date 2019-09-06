@@ -1,0 +1,50 @@
+
+public class Demineur {
+	
+	
+	private String name;
+	private Level lev;
+	
+	public Demineur()//Constructeur par défaut du Demineur
+	{
+		
+		//Champ crée avec premier constructeur par défaut
+    	Champ champ=new Champ();    	
+    	//champ.placeMines();
+    	champ.affText();    	
+    	champ.toString();//compiler writes here s1.toString()     	
+    	System.out.println(champ);//Affichage de C(après surcharge)
+				
+	}
+	
+	public Demineur(String name,Level lv)//Constructeur surchargé
+	{
+		
+		this.lev=lv;
+		Champ champ2= new Champ(name,lv); 	
+    	System.out.println(champ2);//Affichage de champ 2(après surcharge)
+		
+	}
+	
+	
+
+	
+    public static void main(String args [])
+    {
+    	new Demineur();//Constructeur par défaut
+    	Level l=new Level(lvl.HARD);
+    	new Demineur("Mineur game",l);
+    	//new Demineur(10,5,"Mines_Game");//Constructeur surchargé
+    	
+    }
+  //Destructeur
+  	protected void finalize() throws Throwable
+  	{
+  		super.finalize();
+  	}
+  	
+    
+}
+
+
+

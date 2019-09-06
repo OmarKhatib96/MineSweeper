@@ -1,0 +1,46 @@
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+public class IHMHello extends JPanel {
+/** constructeur
+* @param la classe contenant les traitements
+*/
+ public IHMHello(Demineur Demin) {
+setBackground(Color.cyan);
+
+ImageIcon quitIcon = new ImageIcon("sortieCLR.gif"); // image
+JLabel title = new JLabel("Welcome on board");
+add(title,BorderLayout.NORTH);
+
+
+
+
+
+JPanel panelMines =new JPanel();
+panelMines.setLayout(new GridLayout(2,2));
+panelMines.add(new JLabel("x"));
+panelMines.add(new JLabel("x"));
+panelMines.add(new JLabel("x"));
+add(panelMines,BorderLayout.CENTER);
+
+
+JButton butQuit = new JButton("Quit") ; // bouton quit
+butQuit.setForeground(Color.DARK_GRAY);
+butQuit.setFont(new Font("Papyrus", Font.PLAIN,18));
+
+
+butQuit.addActionListener(new ActionHello(ActionHello.QUIT,Demin));
+add(butQuit,BorderLayout.SOUTH)
+
+;
+ 
+ 
+ }
+ 
+ 
+ public void actionPerformed(ActionEvent e) {
+	 System.exit(0);
+	 
+	 
+ }
+}

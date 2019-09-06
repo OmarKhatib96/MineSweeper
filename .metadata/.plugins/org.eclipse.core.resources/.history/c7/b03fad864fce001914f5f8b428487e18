@@ -1,0 +1,44 @@
+
+import java.util.*;
+
+public class Champ {
+	
+	final static int NBMINES=5;
+	final static int DIM=5;
+	
+ 
+
+	
+	boolean[][] tabMines;
+	
+	
+	
+	Random alea=new Random();
+	
+	public  void placeMines ()
+	{
+		tabMines=new boolean [DIM][DIM];
+		for(int i=0;i<NBMINES;i++)
+		{
+			int x=alea.nextInt(DIM);
+			int y=alea.nextInt(DIM);
+			tabMines[x][y]=true;//true si la case contient une mines
+			
+		}
+	}
+	
+	public static void affText()
+	{
+		for(int j=0;j<DIM;j++)
+		{
+			for(int i=0;i<DIM;i++)
+			{
+				System.out.println()
+			}
+		}
+		
+		
+	}
+	
+
+}

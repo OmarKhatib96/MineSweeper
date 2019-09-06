@@ -1,0 +1,32 @@
+package emse.ismin.demingui;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JLabel;
+
+
+public class Main extends JFrame {
+	
+	
+	Main()
+	{
+		JPanel panel= new JPanel();
+		JLabel lab= new JLabel("Coucou");//Windows title
+		panel.add(lab);
+		
+		//But Quit
+		setContentPane(panel);
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
+		pack();
+		setVisible(true);
+		
+	}
+	
+	public static void main(String[] args)
+	{
+		
+		new Main();
+	}
+
+}
+

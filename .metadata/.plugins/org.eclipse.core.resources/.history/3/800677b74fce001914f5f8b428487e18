@@ -1,0 +1,15 @@
+
+public class Demineur {
+    public static void main(String args []){
+    	
+    	Champ C=new Champ();
+    	
+    	affichage de ce champ sous forme textuelle 
+
+    	
+    	
+    	
+    }
+
+
+}

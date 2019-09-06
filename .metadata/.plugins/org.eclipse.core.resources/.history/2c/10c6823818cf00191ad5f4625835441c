@@ -1,0 +1,22 @@
+import java.awt.event.* ;
+import javax.swing.* ;
+public class AppHello extends JFrame {
+/** constructor */
+public AppHello() {
+super("Hello App");
+IHMHello ihmHello= new IHMHello(this) ;
+setContentPane(ihmHello) ;
+setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+pack() ;
+setVisible(true) ;
+ }
+/** ze main */
+ public static void main (String [] args) {
+new AppHello() ;
+ }
+/** Quit the application */
+public void quit() {
+System.out.println("Bye-Bye ");
+System.exit(0) ;
+ }
+}
