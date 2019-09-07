@@ -4,9 +4,10 @@ import javax.swing.*;
 
 public class IHMHello extends JPanel implements ActionListener {
 	
-	private JButton butQuit =new JButton("Quit") ; 
-	private JButton mQuitter=new JButton("Quitter");
-/** constructeur
+	private JButton butQuit =new JButton("Quit") ;//Les mettre en attributs pour qu'ils soient accessible dans la classe
+	private JMenuItem mQuit=new JMenuItem("Quitter",KeyEvent.VK_Q);//
+	//private JButton mQuit=new JButton("Quitter");
+/** constructeuraddActionListener
 * @param la classe contenant les traitements
 */
  public IHMHello(Demineur Demin) {
@@ -23,7 +24,6 @@ JLabel title = new JLabel("Welcome on board");
 JPanel panelMines =new JPanel();
 int X=Demin.getChamp().getDimensionX();
 int Y=Demin.getChamp().getDimensionY();
-
 panelMines.setLayout(new GridLayout(X,Y));
 
 
@@ -47,30 +47,23 @@ JMenuBar menuBar=new JMenuBar();
 //Le menu Partie
 JMenu menuPartie=new JMenu("Partie");
 menuBar.add(menuPartie);
-JMenuItem mQuitter=new JMenuItem("Quitter",KeyEvent.VK_Q);
 JMenuItem mAide=new JMenuItem("Help",KeyEvent.VK_Q);
-menuPartie.add(mQuitter);
-mQuitter.addActionListener(this);
-menuPartie.add(mQuitter);
-
+menuPartie.add(mQuit);
+mQuit.addActionListener(this);
+menuPartie.add(mQuit);
 Demin.setJMenuBar(menuBar);
 JMenu menuHelp=new JMenu("Help");
 menuBar.add(menuHelp);
-
 menuHelp.add(mAide);
-
-
-
-
- 
- }
+}
  
  
  public void actionPerformed(ActionEvent e) {
-	if(e.getSource()==butQuit  || e.getSource()==mQuitter) {
+	if(e.getSource()==butQuit  || e.getSource()==mQuit) 
+	{
 	
 		int reponse=JOptionPane.showConfirmDialog(null, "êtes-vous sûrs?","Bye-Bye",JOptionPane.YES_NO_OPTION,JOptionPane.ERROR_MESSAGE);
-		if( reponse==JOptionPane.YES_OPTION)
+		if( reponse==JOptionPane.YES_OPTION)//Si l'utilisteur a appuyé sur oui
 		 
 			System.exit(0);
 		}
