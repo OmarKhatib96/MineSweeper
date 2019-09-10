@@ -4,6 +4,7 @@ import java.awt.event.* ;
 import javax.swing.* ; 
 import java.awt.BorderLayout;
 import java.awt.Button;
+import java.awt.Graphics;
 import java.awt.GridBagLayout;
 
 
@@ -33,8 +34,8 @@ public class Demineur extends JFrame {
     	champ2.affText();    	    	
 		IHMHello gui= new IHMHello(this) ;//Renommer IHMHello à GUi
 		setContentPane(gui) ;//mettre un panel au milieu		
-    	JPanel monPanel = new JPanel() ;
-    	add(monPanel) ; 
+    	//JPanel monPanel = new JPanel() ;
+    	//add(monPanel) ; 
     	pack();
 		setVisible(true) ; 
 		
@@ -52,7 +53,8 @@ public class Demineur extends JFrame {
     	//new Demineur();//Constructeur par défaut
     	Level l=new Level(lvl.EASY);
     	new Demineur("Mineur game",l);
-    	
+    	//Graphics gc;
+    	 //paintComponent
     	//new Demineur(10,5,"Mines_Game");//Constructeur surchargé
     	
     }

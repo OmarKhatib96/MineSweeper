@@ -1,7 +1,7 @@
 
 public class Partie {
 	private Level lvl;
-	private int nbr_joueurs;
+	
 	
 	
 	

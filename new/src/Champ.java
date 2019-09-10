@@ -3,7 +3,7 @@ import java.util.*;
 
 public class Champ {
 	//Attributs par défauts
-	private final static int NBMINES=3;
+	private final static int NBMINES=30;
 	private final static int DIMEASY=5;
 	private final static int DIMMEDIUM=10;
 	private final static int DIMHARD=20;
@@ -26,7 +26,7 @@ public class Champ {
 		dimY=dimensionY;
 		nbmines=nbrmines;
 		tabMines=new boolean [dimX][dimY];
-		placeMines(nbmines);		
+		placeMines();		
 	}
 	
 	
@@ -45,13 +45,15 @@ public class Champ {
 	public Champ(String name,Level lev)
 	{
 		this.name=name;
+		newPartie(lev);
+		/*this.name=name;
 		if (lev.getLevel()==lvl.EASY)
 			InitialisationChamp(10,10,5);
 		else if(lev.getLevel()==lvl.MEDIUM)
 			InitialisationChamp(20,20,6);	
 		else if(lev.getLevel()==lvl.HARD)
 			InitialisationChamp(40,40,26);
-		
+		*/
 		
 	}
 	public boolean [][]getTab() {
@@ -77,13 +79,24 @@ public class Champ {
 		return nbmines;
 	}
 	
-	public  void placeMines(int nbrmines)//Va placer aléatoirement les mines sur le champs
+	public  void placeMines()//Va placer aléatoirement les mines sur le champs
 	{
-		for(int i=0;i<nbrmines;i++)
+		
+		for(int i=0;i<tabMines.length;i++)
+			for(int j=0;j<tabMines[0].length;j++)
+				tabMines[i][j]=false;
+
+			
+		for(int i=NBMINES;i>0;)
 		{
-			int x=alea.nextInt(dimX);
-			int y=alea.nextInt(dimY);
-			tabMines[x][y]=true;//true si la case contient une mines
+			int x=alea.nextInt(tabMines.length);
+			int y=alea.nextInt(tabMines[0].length);
+			
+				if(!tabMines[x][y]) {
+					tabMines[x][y]=true;
+					i--;
+				}
+			
 			
 		}
 	}
@@ -144,6 +157,19 @@ public class Champ {
 		   
 		   
 	   }
+	 
+	 public  void newPartie(Level lev) {
+		 
+		 	//this.name=name;
+			if (lev.getLevel()==lvl.EASY)
+				InitialisationChamp(10,10,5);
+			else if(lev.getLevel()==lvl.MEDIUM)
+				InitialisationChamp(20,20,6);	
+			else if(lev.getLevel()==lvl.HARD)
+				InitialisationChamp(40,40,26);
+		 
+		 
+	 }
 	 
 	//Destructeur
 	protected void finalize() throws Throwable
