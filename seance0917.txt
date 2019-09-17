@@ -1,0 +1,27 @@
+
+Séance 5: Les threads
+Runnable: a une seule méthode la méthode run(){...}
+-->il faut la surcharger
+
+créer un objet thread avec en paramètre cette fonction Runnable
+pour arrêter le thread on le met à NULL(monThread=null);
+Le timer
+
+
+poir les conflits d'accés on déclare la fonction comme:
+public synchronized void maMeth(){
+
+}
+synchronized veut dire que y a pas d'exécution parallèle
+on ajoute un static pour dire qu'on déclenche pas des méthodes en même 
+temps
+Daemon:service
+attendre la fin d'un autre thread: join()
+
+
+Les flux
+
+
+
+
+

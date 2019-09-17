@@ -1,7 +1,0 @@
-package emse.ismin.demingui;
-
-import JFrame;
-
-public class Main extends JFrame {
-
-}

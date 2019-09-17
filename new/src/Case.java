@@ -18,8 +18,6 @@ class Case extends JPanel implements MouseListener{
 	private Demineur demin;
 	private boolean clicked;
 
-
-
 	public Case (int x, int y,Demineur Demin) {//passer position
 		this.x=x;
 		this.y=y;
@@ -27,6 +25,9 @@ class Case extends JPanel implements MouseListener{
 		setPreferredSize(new Dimension(DIM, DIM)); // taille de la case
 		addMouseListener(this); // ajout listener souris
 	}
+	
+	
+	
 
 
 	/** le dessin de la case */
@@ -53,8 +54,12 @@ class Case extends JPanel implements MouseListener{
 
 					e.printStackTrace();
 				}
+				//JOptionPane.showMessageDialog(null, "You loose!!!");
+				//demin.setLost(true);
 			}else
 			{
+				//demin.set_nbr_cases_decouvertes(demin.Get_nbr_cases_decouvertes()+1);//incrementation du nombre de cases découverte
+				
 				if(demin.getChamp().nbr_mines(x, y)==0) {
 
 					gc.setColor(new Color(9,125,139));
@@ -72,6 +77,7 @@ class Case extends JPanel implements MouseListener{
 		}
 		//gc.drawString(txt, 10,10); // dessin du texte à la position 10, 10
 	}
+	
 	/** la gestion de la souris */
 
 	public void mousePressed (MouseEvent e) {
@@ -81,10 +87,43 @@ class Case extends JPanel implements MouseListener{
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		if(!clicked && !demin.getChamp().Ismin( x, y) && !demin.getLost()) {
+		demin.set_nbr_cases_decouvertes(demin.Get_nbr_cases_decouvertes()+1);//incrementation du nombre de cases découverte
 		clicked=true;
+		}
+		
+		
+		if(!demin.getLost()) {//partie pas perdue
+			//démarrage partie 
+			
+		if(!demin.isStarted()) {
+			demin.getGui().getCompteur().startCpt();
+			demin.setStarted(true);
+			demin.setLost(false);
+		}
 		repaint();
+		if(demin.getChamp().Ismin(x, y)) {
+			JOptionPane.showMessageDialog(null, "You lost !!! Your score is "+String.valueOf(demin.Get_nbr_cases_decouvertes())+" boxes found with Time: "+String.valueOf(demin.getGui().getCompteur().GetCounter())+" seconds");
+			//JOptionPane.showMessageDialog(null, "You loose!!!");
 
+			demin.setLost(true);
+			demin.getGui().getCompteur().stopCpt();
+			//JOptionPane.showConfirmDialog(null, "êtes-vous sûrs?","Bye-Bye",JOptionPane.YES_NO_OPTION,JOptionPane.ERROR_MESSAGE);
+			//JOptionPane.
+
+		}else {
+			
+			
+		}
+	//je ne suis pas sur une mone 
+
+		//repaint();
 	}
+		if(demin.isWin()) {
+			JOptionPane.showMessageDialog(null, "You win!!! your score is "+String.valueOf(demin.Get_nbr_cases_decouvertes())+" Time: "+String.valueOf(demin.getGui().getCompteur().GetCounter())+" seconds");
+			
+		}
+}
 
 	@Override
 	public void mouseEntered(MouseEvent e) {

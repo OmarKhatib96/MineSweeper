@@ -12,10 +12,10 @@ public class IHMHello extends JPanel implements ActionListener {
 	private JMenuItem mMedium=new JMenuItem("Medium",KeyEvent.VK_E);
 	private JMenuItem mHard=new JMenuItem("Hard",KeyEvent.VK_E);
 	private JPanel panelMines=new JPanel();
+	private boolean Started=false;
+	private Compteur compteur;
 	
 	private  Case [][] tabCases;
-	//private Graphics gc=new Graphics();
-	//private JButton mQuit=new JButton("Quitter");
 /** constructeuraddActionListener
 * @param la classe contenant les traitements
 */
@@ -34,19 +34,16 @@ title.setHorizontalTextPosition(JLabel.CENTER);
 this.Demin=Demin;
 placeCases();
 			
-			/*if(Demin.getChamp().Ismin(i, j)) {//S'il y a une mines dans les coordonées i,j
-				
-				panelMines.add(new JLabel("X")); 
-				panelMines.add( new JLabel(new ImageIcon(new ImageIcon("img/mine.png").getImage().getScaledInstance(25, 25, Image.SCALE_SMOOTH))));
-			}
-				else
-				panelMines.add(new JLabel(String.valueOf(Demin.getChamp().nbr_mines(i, j))));
-*/
- 
-
+		
+JPanel panelnorth=new JPanel();
  
 add(panelMines,BorderLayout.CENTER);
-add(title,BorderLayout.NORTH);
+
+ compteur=new Compteur();
+//panel north 
+panelnorth.add(title);
+panelnorth.add(compteur);
+add(panelnorth,BorderLayout.NORTH);
 
 butQuit.setForeground(Color.DARK_GRAY);
 butQuit.setFont(new Font("Papyrus", Font.PLAIN,18));
@@ -68,13 +65,10 @@ mNew.addActionListener(this);
 
 menuPartie.add(mQuit);
 menuPartie.add(mNew);
-
 Demin.setJMenuBar(menuBar);
 JMenu menuHelp=new JMenu("Aide");
-
 menuBar.add(menuHelp);
 menuHelp.add(mAide);
-
 //Raccourci clavier  à partir du menu
 JMenuItem itemExit= new JMenuItem("Exit",KeyEvent.VK_E);
 //Raccourci clavier  à partir de la fenêtre
@@ -101,22 +95,22 @@ menuPartie.add(menuLevel);
 //JMenuItem mnewpartie=new JMenuItem("Nouvelle partie",KeyEvent.VK_Q);
 menuPartie.add(mQuit);
 
-//mQuit.setToolTipText("The End");
-//Coller le menu à droite
-
-//ToolTips
-
-
-
-
-
-
 
 
 }
  
  
- public void actionPerformed(ActionEvent e) {
+ public Compteur getCompteur() {
+	return compteur;
+}
+
+
+public void setCompteur(Compteur compteur) {
+	this.compteur = compteur;
+}
+
+
+public void actionPerformed(ActionEvent e) {
 	 //Level lev=Level();
 	if(e.getSource()==butQuit  || e.getSource()==mQuit) 
 	{
@@ -129,6 +123,11 @@ menuPartie.add(mQuit);
 			
 			Demin.getChamp().placeMines();
 			newPartie();
+			
+			//Demin.getGui().getCompteur().startCpt();
+
+			
+			
 		}else if(e.getSource()==mEasy) {
 			Level l=new Level(lvl.EASY);
 			Demin.getChamp().newPartie(l);
@@ -161,15 +160,30 @@ menuPartie.add(mQuit);
 	 for(int i=0;i<Demin.getChamp().getDimensionX();i++)
 		 	for(int j=0;j<Demin.getChamp().getDimensionY();j++)
 		 		tabCases[i][j].newPartie();
+	 
+	 	
+	    Demin.getGui().getCompteur().stopCpt();
+		//Demin.getGui().setCompteur(new Compteur());
+	    Demin.newPartie();
+		//Demin.setStarted(false);//réinitialisation
+		//Demin.setLost(false);
+
 		 		
 	 
 	 
 }
+
  
  private void newPartie(Level l) {
 	 	panelMines.removeAll();
 	 	placeCases();
 	 	Demin.pack();
+
+	    Demin.getGui().getCompteur().stopCpt();
+	    Demin.newPartie();
+		//Demin.getGui().setCompteur(new Compteur());
+		//Demin.setStarted(false);//réinitialisation
+		//Demin.setLost(false);
  }
  
  private void  placeCases(){
@@ -186,6 +200,9 @@ panelMines.setLayout(new GridLayout(X,Y));
 //creation des tab des cases
 
 tabCases= new Case[Demin.getChamp().getDimensionX()][Demin.getChamp().getDimensionY()];
+
+
+
 for(int j=0;j<Y;j++) {	
 		for(int i=0;i<X;i++) {
 			tabCases[i][j]=new Case(i,j,Demin);

@@ -3,12 +3,18 @@ import java.util.*;
 
 public class Champ {
 	//Attributs par défauts
-	private final static int NBMINES=30;
-	private final static int DIMEASY=5;
-	private final static int DIMMEDIUM=10;
-	private final static int DIMHARD=20;
-	
+	private final static int NBMINES=0;
+	private final static int DIMEASY=2;
+	private final static int DIMMEDIUM=2;
+	private final static int DIMHARD=2;
+	private final static int NBMINESEASY=3;
+	private final static int NBMINESMEDIUM=5;
+	private final static int NBMINESHARD=10;
 
+
+				
+	
+	
 	
 	private final String NomParDefaut="GAME";
 	 private String name;
@@ -16,7 +22,7 @@ public class Champ {
 	Random alea=new Random();
 	private  int dimX;
 	private int dimY;
-	private  int nbmines;
+	private  int nbmines=NBMINES;
 	
 					
 		
@@ -87,7 +93,7 @@ public class Champ {
 				tabMines[i][j]=false;
 
 			
-		for(int i=NBMINES;i>0;)
+		for(int i=nbmines;i>0;)
 		{
 			int x=alea.nextInt(tabMines.length);
 			int y=alea.nextInt(tabMines[0].length);
@@ -161,12 +167,28 @@ public class Champ {
 	 public  void newPartie(Level lev) {
 		 
 		 	//this.name=name;
-			if (lev.getLevel()==lvl.EASY)
-				InitialisationChamp(10,10,5);
-			else if(lev.getLevel()==lvl.MEDIUM)
-				InitialisationChamp(20,20,6);	
-			else if(lev.getLevel()==lvl.HARD)
-				InitialisationChamp(40,40,26);
+			if (lev.getLevel()==lvl.EASY) {
+				nbmines=NBMINESEASY;
+				InitialisationChamp(5,4,nbmines);
+				
+			}
+			else if(lev.getLevel()==lvl.MEDIUM) {
+				nbmines=NBMINESMEDIUM;	
+				InitialisationChamp(10,10,nbmines);	
+				
+			}
+			else if(lev.getLevel()==lvl.HARD) {
+				nbmines=NBMINESHARD;
+
+				InitialisationChamp(15,15,nbmines);
+
+			}
+		 
+		 
+	 }
+	 
+	 public void newPartie() {
+		 
 		 
 		 
 	 }
