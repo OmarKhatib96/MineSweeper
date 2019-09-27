@@ -27,9 +27,6 @@ class Case extends JPanel implements MouseListener{
 	}
 	
 	
-	
-
-
 	/** le dessin de la case */
 	//@override 
 

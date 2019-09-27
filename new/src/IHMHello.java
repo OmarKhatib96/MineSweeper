@@ -14,6 +14,15 @@ public class IHMHello extends JPanel implements ActionListener {
 	private JPanel panelMines=new JPanel();
 	private boolean Started=false;
 	private Compteur compteur;
+	private JPanel panelSouth;
+	private JPanel panelConnexion=new JPanel();
+	private JTextField hostField=new JTextField(Demineur.HOSTNAME,20);
+	private JTextField portField=new JTextField(String.valueOf(Demineur.PORT),6);
+	private JTextField pseudoField=new JTextField(Demineur.PSEUDO,15);
+	private JTextArea msgArea;
+	//msgArea=new  JTextArea(10,20);
+
+	private JButton connexionBut=new JButton("Connect");
 	
 	private  Case [][] tabCases;
 /** constructeuraddActionListener
@@ -35,22 +44,44 @@ this.Demin=Demin;
 placeCases();
 			
 		
-JPanel panelnorth=new JPanel();
- 
+JPanel panelnorth=new JPanel(new BorderLayout());
 add(panelMines,BorderLayout.CENTER);
-
  compteur=new Compteur();
+ Joueur joueur= new Joueur("Joueur1");
+ //panelnorth.add(joueur.getPseudo());
 //panel north 
-panelnorth.add(title);
-panelnorth.add(compteur);
+panelnorth.add(title,BorderLayout.NORTH);
+panelnorth.add(compteur,BorderLayout.CENTER);
+panelSouth= new JPanel(new BorderLayout());
+//JPanel panelConnexion=new JPanel();
+
+//JTextField hostField=new JTextField(20);
+panelConnexion.add(new JLabel("Serveur"));
+hostField=new JTextField("localhost");
+panelConnexion.add(hostField);
+panelConnexion.add(pseudoField);
+panelConnexion.add(portField);
+panelConnexion.add(connexionBut);
+connexionBut.addActionListener(this);
+panelnorth.add(panelConnexion,BorderLayout.SOUTH);
+
 add(panelnorth,BorderLayout.NORTH);
+
+//text area
+msgArea=new  JTextArea(5,20);
+
+msgArea.append("Bonne Partie");
+panelSouth.add(msgArea);
+
+//butquit
 
 butQuit.setForeground(Color.DARK_GRAY);
 butQuit.setFont(new Font("Papyrus", Font.PLAIN,18));
 butQuit.addActionListener(this);
-add(butQuit,BorderLayout.SOUTH);
+panelSouth.add(butQuit,BorderLayout.SOUTH);
+//add(butQuit,BorderLayout.SOUTH);
 
-
+add(panelSouth,BorderLayout.SOUTH);
 JMenuBar menuBar=new JMenuBar();
 
 //Le menu Partie
@@ -109,6 +140,9 @@ public void setCompteur(Compteur compteur) {
 	this.compteur = compteur;
 }
 
+public void addMsg(String str) {
+	msgArea.append(str);	
+}
 
 public void actionPerformed(ActionEvent e) {
 	 //Level lev=Level();
@@ -145,8 +179,8 @@ public void actionPerformed(ActionEvent e) {
 			Demin.getChamp().newPartie(l);
 			newPartie(l);
 
-
-			
+		}else if(e.getSource()==connexionBut) {
+			Demin.Connect2Server(hostField.getText(),Integer.parseInt(portField.getText()),pseudoField.getText());
 		}
 	
 	//int x=e.getX();
@@ -196,8 +230,6 @@ int X=Demin.getChamp().getDimensionX();
 int Y=Demin.getChamp().getDimensionY();
 panelMines.setLayout(new GridLayout(X,Y));
 
-//JLabel label = new JLabel(new ImageIcon(new ImageIcon(ImageIcon("img/mine.png")).getImage().getScaledInstance(30, 30, Image.SCALE_SMOOTH)));
-//creation des tab des cases
 
 tabCases= new Case[Demin.getChamp().getDimensionX()][Demin.getChamp().getDimensionY()];
 
