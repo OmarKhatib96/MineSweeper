@@ -1,10 +1,21 @@
 import java.awt.*;
 import java.awt.event.*;
+import java.io.ByteArrayInputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
+
 import javax.swing.*;
 
 public class IHMHello extends JPanel implements ActionListener {
 	
 	private JButton butQuit =new JButton("Quit") ;//Les mettre en attributs pour qu'ils soient accessible dans la classe
+	private JButton sendButton = new JButton("Send");
+
 	private JMenuItem mQuit=new JMenuItem("Quitter",KeyEvent.VK_Q);//
 	private JMenuItem mNew=new JMenuItem("Nouvelle Partie",KeyEvent.VK_Q);//
 	private Demineur Demin;
@@ -20,6 +31,7 @@ public class IHMHello extends JPanel implements ActionListener {
 	private JTextField portField=new JTextField(String.valueOf(Demineur.PORT),6);
 	private JTextField pseudoField=new JTextField(Demineur.PSEUDO,15);
 	private JTextArea msgArea;
+	private JTextField inputTextField=new JTextField();
 	//msgArea=new  JTextArea(10,20);
 
 	private JButton connexionBut=new JButton("Connect");
@@ -70,15 +82,30 @@ add(panelnorth,BorderLayout.NORTH);
 //text area
 msgArea=new  JTextArea(5,20);
 
-msgArea.append("Bonne Partie");
-panelSouth.add(msgArea);
+msgArea.append("Bonne Partie\n");
+panelSouth.add(msgArea,BorderLayout.NORTH);
+
+
+//Writing message area
+Box box = Box.createHorizontalBox();
+add(box, BorderLayout.SOUTH);
+//Demin.getTextField = new JTextField();
+//JTextField inputTextField=new JTextField();
+//sendButton = new JButton("Send");
+box.add(inputTextField);
+box.add(sendButton);
+sendButton.addActionListener(this);
+
 
 //butquit
 
 butQuit.setForeground(Color.DARK_GRAY);
 butQuit.setFont(new Font("Papyrus", Font.PLAIN,18));
 butQuit.addActionListener(this);
-panelSouth.add(butQuit,BorderLayout.SOUTH);
+//panelSouth.add(butQuit,BorderLayout.SOUTH);
+panelSouth.add(box,BorderLayout.SOUTH);
+
+
 //add(butQuit,BorderLayout.SOUTH);
 
 add(panelSouth,BorderLayout.SOUTH);
@@ -180,7 +207,56 @@ public void actionPerformed(ActionEvent e) {
 			newPartie(l);
 
 		}else if(e.getSource()==connexionBut) {
-			Demin.Connect2Server(hostField.getText(),Integer.parseInt(portField.getText()),pseudoField.getText());
+			String Message="Welcome to the Démineur ISMIN game, please choose a nickname";
+			String nickname=JOptionPane.showInputDialog(Message);
+			Demin.setPseudo(nickname);
+			//Add pop up window box;
+			DataOutputStream out;
+			
+			Demin.Connect2Server(hostField.getText(),Integer.parseInt(portField.getText()),Demin.getPseudo());
+			try {
+				out = new DataOutputStream(Demin.getSocket().getOutputStream());
+			     out.writeUTF(Demin.getPseudo());
+
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+			Demin.setCmd(5);//To get the pseud
+
+			
+		}else if(e.getSource()==sendButton ) {
+			System.out.println("Button send!!!!");
+			String x = inputTextField.getText();
+			if(!x.isEmpty()) {
+				
+			    try {
+			    
+			    	DataOutputStream out = new DataOutputStream(Demin.getSocket().getOutputStream());
+				     out.writeUTF("0");
+				//	InputStream input = new FileInputStream(x) ;
+					
+					//InputStream stream = new ByteArrayInputStream(x.getBytes(StandardCharsets.UTF_8));
+					//int count = stream.available(); 
+					//emin.setCmd(0);
+				    //Thread message=new Thread();
+					//message.start();
+					 DataOutputStream out1 = new DataOutputStream(Demin.getSocket().getOutputStream());
+				     out1.writeUTF(Demin.getPseudo()+": "+x);
+				     //Writer wb=new Writer()
+				    // msgArea.write(out);
+				     inputTextField.setText("");
+				     
+				
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			   
+				Demin.getDis();
+				
+			}
+			//msgArea
 		}
 	
 	//int x=e.getX();

@@ -10,6 +10,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.rmi.UnknownHostException;
+import java.util.Scanner;
 
 import javax.swing.* ; 
 import java.awt.BorderLayout;
@@ -24,41 +25,122 @@ public class Demineur extends JFrame implements Runnable {
 	private static Level lev;
 	public static final int PORT=1000;
 	public static final String HOSTNAME="localhost";
-	public static final String PSEUDO="Omar";
+	public static  String PSEUDO="Omar";
     public static final  int  MSG=0;
     public static final  int  POS=1;
     public static final  int  START=2;
     public static final  int  END=3;
+    public static final int IDLE=4;
+    public static final int GETPSEUDO=5;
 
-
+    private User client;
+    private int cmd;
+    private Scanner scn = new Scanner(System.in); 
+    private boolean connected=false;
+    public static int increment=0;
+    private static String text;
+    //private boolean ButtonSent=false;
+    private JTextField inputTextField;//For each client
 
 	private static Champ champ=	new Champ("Mineur game", new Level(lvl.EASY));
 	private static int nbr_cases_decouvertes=0;
 	private boolean started=false;
-	private IHMHello gui;
+	private static IHMHello gui;
 	private boolean lost=false;
 	JTextArea msgArea=new  JTextArea(5,20);
-	private Thread process;
-	private DataInputStream in;
+	private  Thread process;
+	
+	private  DataInputStream in;
 	private DataOutputStream out;
+	Socket sock;
 	public int  Get_nbr_cases_decouvertes() {
 		return nbr_cases_decouvertes;
 			
 	}
 		
+	public JTextField getTextField() {
+		
+		return inputTextField;
+	}
+	
+	public Socket getSocket() {
+		
+		
+		return sock;
+	}
+	
+	public String getPseudo() {
+		
+		return PSEUDO;
+	}
+	
+	public void setPseudo(String nickname) {
+		
+		this.PSEUDO=nickname;
+	}
+	
+	
+	public void setCmd(int cmd) {
+		this.cmd=cmd;
+	}
 	//Boucle d'attente des évts du serveur
 	public void run() {
 		
-		while(process!=null) {
-			int cmd=in.readInt();
+		
+		
+		while(process!=null && connected) {//boucle "infini"
+				try {
+					cmd=in.readInt();
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			if(cmd==Demineur.MSG) {//Envoie d'un message par le serveur
+				System.out.println("Button pressed ok");
+
+				String msg;
+				try {
+					msg = in.readUTF();
+					System.out.println("from client"+msg);
+
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}//veut dire qu'on va recevoir un message
+
+				//sendMessage(msg);
+				//gui.addMsg(msg);
+				System.out.println("Message sent successfully");//veut dire
+				//cmd=IDLE;
+			}
+			
+			if(cmd==Demineur.POS) {
 				
-				String msg =in.readUTF();
-				gui.addMsg(msg);
+				//String msg;
+				//out.writeUTF(msg);
+			}
+			
+			if(cmd==Demineur.END) {
+				
+				String msg;
+				started=false;
+				quit();
+				closeSocket();
+				process=null;
+				//out.writeUTF(msg);
+				
+			}
+			if(cmd==Demineur.START) {
+				
+				started=true;
 				
 			}
 			
+			
 		}
+		
+		}
+		
 		//boucle infinie
 		
 		//lecture dans in
@@ -72,6 +154,90 @@ public class Demineur extends JFrame implements Runnable {
 		
 		
 		
+	
+	
+	
+	public DataOutputStream getDos(){
+		
+		return out;
+	}
+	
+public DataInputStream getDis(){
+		
+		return in;
+	}
+
+
+
+public void setDis( DataInputStream input) {
+	
+	this.in=input;
+}
+
+
+
+	public void sendMessage(String message) {
+		 /*Thread sendMessage = new Thread(new Runnable()  
+	        { 
+	            @Override
+	            public void run() { 
+	  
+	                while (true) { 
+	                	String msg=scn.nextLine();
+	                */
+	                    try { 
+	                    	out.writeUTF(message);
+	                    } catch (IOException e) { 
+	  
+	                        e.printStackTrace(); 
+	                    } 
+	                } 
+	            //} 
+	       // });
+		 
+		 
+	// sendMessage.start();
+	//} 
+		 
+		 
+	public void readMessage() {
+
+		 Thread readMessage = new Thread(new Runnable()  
+	        { 
+	            
+		@Override
+        public void run() { 
+
+            while (true) { 
+                try { 
+                    // read the message sent to this client 
+                    String msg = in.readUTF(); 
+                    System.out.println(msg); 
+                } catch (IOException e) { 
+
+                    e.printStackTrace(); 
+                } 
+            } 
+        } 
+    }); 
+		 readMessage.start();
+		
+	}
+	
+	
+	
+	public void closeSocket() {
+		
+		try {
+			
+			sock.close();
+			connected=false;
+			
+		}catch(IOException ex) {
+			
+			System.out.println("Cannot close the socket!");
+		}
+		
 	}
 	
 	
@@ -80,17 +246,37 @@ public class Demineur extends JFrame implements Runnable {
 	System.out.println("Try to connect to:"+HostField+":"+PortField);
 	try {
 		
-		Socket sock=new Socket(HostField,PortField);
-		gui.addMsg(" Connexion réussie avec : "+HostField+":"+PortField);
+		sock=new Socket(HostField,PortField);
+		in=new DataInputStream (sock.getInputStream());
+		out= new DataOutputStream (sock.getOutputStream());
+		gui.addMsg(" Connexion réussie avec : "+HostField+":"+PortField+"\n");
+		cmd=IDLE;
+		process=new Thread(this);
+		process.start();
+		connected=true;
+	
+		//gui.addMsg(" Saisissez votre pseudo s'il vous plait : ""\n");
+/*
+		
 		in= new DataInputStream(sock.getInputStream());
 		out=new DataOutputStream(sock.getOutputStream());
-		process=new Thread(this);
-		DataOutputStream out =new  DataOutputStream(sock.getOutputStream());
-		DataInputStream in = new DataInputStream(sock.getInputStream()); 
 		
+		
+		//client=new User(sock,PseuField,in,out);
+		
+		process=new Thread(this);
+		//if (args.length > 0) // envoi du nom
+			// out.writeUTF(args[0]);
+			 
+			 out.writeUTF("Gros Bill");
+			 int numJoueur = in.readInt(); // reception d’un nombre
+			 System.out.println("Joueur n°:"+numJoueur);
+			 in.close(); // fermeture Stream
+			 out.close();
+			 sock.close() ; // fermeture Socket 
 		//String pseudoJoueur=in.
 		//System.out.println("Joueur n°:"+pseudoJoueur); 
-
+*/
 		
 	}catch(UnknownHostException e) {
 		gui.addMsg("Connexion impossible avec : "+HostField+":"+PortField);
@@ -185,7 +371,9 @@ public boolean isStarted() {return started;}
 	     gui= new IHMHello(this) ;//Renommer IHMHello à GUi
 		setContentPane(gui) ;//mettre un panel au milieu		
     	pack();
-		setVisible(true) ; 
+		setVisible(true) ;
+		process=new Thread(this);
+		process.start();
 		
 	}
 		
@@ -199,8 +387,15 @@ public boolean isStarted() {return started;}
     {
     	Level l=new Level(lvl.EASY);
     	new Demineur("Mineur game",l);
+    	Thread main =new Thread();
+    	main.start();
+    	
+    //	while(main!=null) {
+		//	System.out.println(increment);
+		//}
     	
     	
+	
     }
     
     

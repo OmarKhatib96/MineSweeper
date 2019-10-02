@@ -9,6 +9,8 @@ import java.awt.event.* ;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 import javax.swing.* ; 
 import java.awt.BorderLayout;
@@ -21,7 +23,8 @@ public class Serveur extends JFrame implements Runnable{
 	ServerSocket serversocket ;
 	private GuiServeur gui;
 	List<Socket> listSocket = new ArrayList<Socket>();
-
+	//HashMap<String ,Socket > listClients=new HashMap<String ,Socket >();
+	ArrayList<User> listClients=new ArrayList<User>();
 	
 	Serveur(){
 		System.out.println("Démarrage du Serveur");
@@ -39,6 +42,16 @@ public class Serveur extends JFrame implements Runnable{
 	}
 
 		
+public void AddClient(User client) {
+	
+	listClients.add(client);
+}
+	
+public ArrayList<User> listClients(){
+	
+	
+	return listClients;
+}
 
 public void startServer() {
 	
@@ -49,15 +62,6 @@ public void startServer() {
 	//List<Socket> listSocket = new ArrayList<Socket>();
 	new Thread(this).start();
 
-/*try {
-		
-		ServerSocket serversocket=new  ServerSocket(Demineur.PORT);
-		//Lancement d'un thread pour attendre le client
-		Socket socket =serversocket.accept();
-		gui.addMsg(" Nouveau client");
-//		listSocket.add(socket);
-		
-*/
 	
 }catch(IOException e) {
 	
@@ -70,31 +74,79 @@ public void startServer() {
 
 
 public void run(){
-	try {
+	
 		// serversocket=new  ServerSocket(Demineur.PORT);
 		//Lancement d'un thread pour attendre le client
-		Socket socket =serversocket.accept();
-		new Thread(this).start();
-		gui.addMsg(" Nouveau client\n");
-		listSocket.add(socket);
+		
+			     //String nickname = (new Scanner ( client.getInputStream() )).nextLine();
+
+		//addClient()
+		//listSocket.add(socket);
+	//(t.isAlive()) {//Boucle infinie
+			//Ecouter messages venant des clients
 	
-	//ouverture in and out
+			try {
+			Socket socket =serversocket.accept();	
+			Thread t =new Thread(this);
+			t.start();//Dans un thread à part 
+			this.listSocket.add(socket);//add the new incoming client
+
+			gui.addMsg(" Nouveau client\n");
+			DataInputStream dis = new DataInputStream(socket.getInputStream());
+			LocalDateTime now = LocalDateTime.now(); 
+		    Date date = new Date();  
+			DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+			String welcomeMessage=dis.readUTF()+" has just joined the game";//From the IHM
+			gui.addMsg(dtf.format(now)+" "+welcomeMessage+"\n");
+			while(t!=null) {
+			String message=dis.readUTF();//receive messages from the IHM
+			DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
+			LocalDateTime now1 = LocalDateTime.now(); 
+		    Date date1 = new Date();  
+			gui.addMsg(dtf1.format(now1)+" "+message+"\n");
+			
+            System.out.println(message);
+            for(int client=0;client<this.listSocket.size();client++) {//Diffuser aux autre clients
+    			DataOutputStream dos = new DataOutputStream(listSocket.get(client).getOutputStream());
+    			if(!listSocket.get(client).equals(socket))
+    				dos.writeUTF(message);//Envoyer à tous les autres sauf à nous-même
+    			
+            }
+    			
+            	
+            
+            
+			}
+           //gui.addMsg(Demin.getPseudo()+": "+message);
+		    
+
+
+            //isAlreadyOpened = true;                     
+          //  System.out.println(dis.readUTF());
+		//	DataInputStream dis = new DataInputStream(socket.getInputStream()); 
+         // DataOutputStream dos = new DataOutputStream(socket.getOutputStream()); 
+			//String pseudo = (new Scanner ( socket.getInputStream() )).nextLine();
+		    //User client= new User(socket,dis,dos);
+		    //listClients.add(client);
+
+
+		  /*  
+			*/
+			}catch (IOException e) {
+				e.printStackTrace();
+			}
+		    		    
+		
+		
+	}
+
 	
-	//STOCKAGE DANS UNE COLLECTION
-	
-	//boucle infinie d'attente
-	
-	
-	//redispatch aux autres si nécessaire
-	
-}catch (IOException e) {
-	e.printStackTrace();
-}
+
 	
 	
 }
 
-}
+
 
 /*	
 	try {
