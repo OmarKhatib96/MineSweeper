@@ -1,0 +1,68 @@
+Lancer la partie
+
+Start->Envoie à tout le monde un message
+Les clients doivent être en attente(lance un thread pour écouter)
+
+Le serveur va envoyer un entier(début de partie)
+
+L'autre est bloqué sur reading
+
+
+
+Readint:
+
+
+Envoyer à tous les clients start
+
+On va parcourir tous nos out et on va faire un writing
+à l'intérieur qui va envoyer un 0 (constante de start)
+
+
+Le reading était bloqué il va se débloqué
+-->Afficher le go
+Puis va se rebloqué
+*****Dans l'autre sens*******
+Si on clique sur une case, on va envoyer un message(un entier)
+
+Puis (x,y et le joueur)--->write int +write in +write UTF
+Le serveur était en attente d'un writing 
+si la commande est une position , le serveur va fair readInt,readInt,readUTF
+
+Dans le serveur:
+if(position)
+
+
+else if(MSG)
+
+
+Dans le démineur
+readINT
+if(Start)
+
+
+Deuxième étape:
+Créer dans le serveur le champ
+
+clique-->Envoie x,y du joueur au serveur, en rentre dans if(pos)-->on regarde dans le champ si ça a déja été découvert ou pas-->On aura besoin d'un tableau de boléen(si ça déja été dévcouvert)
+et un tableau d'entier pour montrer qui a cliqué (joueur 1,2...)
+
+On va envoyer à tout le monde à la position 2,2 on a J1 qui a cliqué
+
+mettre la couleur du joueur qui a cliqué en vert sur le champ
+
+
+METTRE SYNCHRONIZED DANS LA METHODE
+
+Demon
+Pouvoir changer le niveau
+
+Bombe il faut qu'elle soit en statique, pour qu'elle soit crée une seule fois 
+
+On peut transformer une couleur en entier
+getrgb
+
+les random de la couleur doit dépendre du nombre de joueur
+
+
+
+17h15

@@ -233,7 +233,7 @@ public void actionPerformed(ActionEvent e) {
 			    try {
 			    
 			    	DataOutputStream out = new DataOutputStream(Demin.getSocket().getOutputStream());
-				     out.writeUTF("0");
+				    // out.writeUTF("0");
 				//	InputStream input = new FileInputStream(x) ;
 					
 					//InputStream stream = new ByteArrayInputStream(x.getBytes(StandardCharsets.UTF_8));
@@ -242,7 +242,9 @@ public void actionPerformed(ActionEvent e) {
 				    //Thread message=new Thread();
 					//message.start();
 					 DataOutputStream out1 = new DataOutputStream(Demin.getSocket().getOutputStream());
+					 out.writeInt(0);//Prévenir le serveur qu'on va envoyer un message
 				     out1.writeUTF(Demin.getPseudo()+": "+x);
+				     
 				     //Writer wb=new Writer()
 				    // msgArea.write(out);
 				     inputTextField.setText("");
@@ -296,6 +298,31 @@ public void actionPerformed(ActionEvent e) {
 		//Demin.setLost(false);
  }
  
+ 
+ public void SetJPanel(int x, int y,Color c)
+ {
+	 
+	 
+	//Case  nouvelleCase=new  Case ( x,  y, Demin);
+	//nouvelleCase.getGraphics().setColor(c);
+	//tabCases[x][y]=nouvelleCase;
+	tabCases[x][y].setClickedCase();
+	 //tabCases[x][y].setBackground(c);
+	tabCases[x][y].getGraphics().setColor(c);
+	tabCases[x][y].getGraphics().fillRect(0, 0, getWidth(), getHeight());
+	// tabCases[x][y].getGraphics().fillRect(1, 1, getWidth(), getHeight());	
+	 //tabCases[x][y].paintComponent( tabCases[x][y].getGraphics());
+			
+	tabCases[x][y].repaint();
+	
+	panelMines.repaint();
+ 
+
+
+	 System.out.println("I got here");
+	 
+	 
+ }
  private void  placeCases(){
 	 
 

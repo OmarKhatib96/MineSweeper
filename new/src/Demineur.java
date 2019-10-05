@@ -83,7 +83,7 @@ public class Demineur extends JFrame implements Runnable {
 	public void setCmd(int cmd) {
 		this.cmd=cmd;
 	}
-	//Boucle d'attente des évts du serveur
+	//Boucle d'attente des ï¿½vts du serveur
 	public void run() {
 		
 		
@@ -101,6 +101,7 @@ public class Demineur extends JFrame implements Runnable {
 				String msg;
 				try {
 					msg = in.readUTF();
+					gui.addMsg(msg+'\n');
 					System.out.println("from client"+msg);
 
 				} catch (IOException e) {
@@ -116,8 +117,19 @@ public class Demineur extends JFrame implements Runnable {
 			
 			if(cmd==Demineur.POS) {
 				
-				//String msg;
-				//out.writeUTF(msg);
+				try {
+					int x=in.readInt();
+					int y=in.readInt();
+					String pseudoPlayer=in.readUTF();
+					System.out.println(pseudoPlayer+" "+x+" "+y);
+					gui.addMsg(pseudoPlayer+" a cliquÃ© sur la case "+"("+x+","+y+")+\n");
+
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			
+				
 			}
 			
 			if(cmd==Demineur.END) {
@@ -131,8 +143,9 @@ public class Demineur extends JFrame implements Runnable {
 				
 			}
 			if(cmd==Demineur.START) {
-				
+				gui.addMsg(getPseudo()+" "+ "Go!\n");
 				started=true;
+				
 				
 			}
 			
@@ -147,7 +160,7 @@ public class Demineur extends JFrame implements Runnable {
 		
 		//Lecture de la commande
 		
-		//lecture du joueur qui a cliqué en  x,y
+		//lecture du joueur qui a cliquï¿½ en  x,y
 
 		
 		//En fct de ce que je lis: j'affiche les mines/numeros/fin de partie
@@ -249,7 +262,7 @@ public void setDis( DataInputStream input) {
 		sock=new Socket(HostField,PortField);
 		in=new DataInputStream (sock.getInputStream());
 		out= new DataOutputStream (sock.getOutputStream());
-		gui.addMsg(" Connexion réussie avec : "+HostField+":"+PortField+"\n");
+		gui.addMsg(" Connexion rï¿½ussie avec : "+HostField+":"+PortField+"\n");
 		cmd=IDLE;
 		process=new Thread(this);
 		process.start();
@@ -269,13 +282,13 @@ public void setDis( DataInputStream input) {
 			// out.writeUTF(args[0]);
 			 
 			 out.writeUTF("Gros Bill");
-			 int numJoueur = in.readInt(); // reception d’un nombre
-			 System.out.println("Joueur n°:"+numJoueur);
+			 int numJoueur = in.readInt(); // reception dï¿½un nombre
+			 System.out.println("Joueur nï¿½:"+numJoueur);
 			 in.close(); // fermeture Stream
 			 out.close();
 			 sock.close() ; // fermeture Socket 
 		//String pseudoJoueur=in.
-		//System.out.println("Joueur n°:"+pseudoJoueur); 
+		//System.out.println("Joueur nï¿½:"+pseudoJoueur); 
 */
 		
 	}catch(UnknownHostException e) {
@@ -344,13 +357,13 @@ public void setDis( DataInputStream input) {
 	}
 
 
-	public Demineur()//Constructeur par défaut du Demineur
+	public Demineur()//Constructeur par dï¿½faut du Demineur
 	{
 		
 		
     	Champ champ=new Champ();    	 	
     	champ.affText();       	   	
-    	System.out.println(champ);//Affichage de C(après surcharge)
+    	System.out.println(champ);//Affichage de C(aprï¿½s surcharge)
 				
 	}
 	
@@ -360,15 +373,15 @@ public boolean isStarted() {return started;}
 		
 		this.started=started;
 	}
-	public  Demineur(String name,Level lv)//Constructeur surchargé
+	public  Demineur(String name,Level lv)//Constructeur surchargï¿½
 	{
 		
-		super("Démineur ISMIN");
+		super("Dï¿½mineur ISMIN");
 		lev=lv;
 		Champ champ2= new Champ(name,lv); 
 		champ=champ2;
     	champ2.affText();    	    	
-	     gui= new IHMHello(this) ;//Renommer IHMHello à GUi
+	     gui= new IHMHello(this) ;//Renommer IHMHello ï¿½ GUi
 		setContentPane(gui) ;//mettre un panel au milieu		
     	pack();
 		setVisible(true) ;
