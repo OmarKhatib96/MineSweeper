@@ -1,4 +1,5 @@
 
+
 import java.awt.GridLayout;
 import java.awt.event.* ;
 import java.io.DataInputStream;
@@ -42,7 +43,9 @@ public class Demineur extends JFrame implements Runnable {
     //private boolean ButtonSent=false;
     private JTextField inputTextField;//For each client
 
-	private static Champ champ=	new Champ("Mineur game", new Level(lvl.EASY));
+    //private static Champ champ=	new Champ("Mineur game", new Level(lvl.EASY));
+    private static Champ champ;
+    private boolean solo=false;
 	private static int nbr_cases_decouvertes=0;
 	private boolean started=false;
 	private static IHMHello gui;
@@ -119,7 +122,8 @@ public class Demineur extends JFrame implements Runnable {
 				
 				try {
 					int x=in.readInt();
-					int y=in.readInt();
+                    int y=in.readInt();
+                   
 					String pseudoPlayer=in.readUTF();
 					System.out.println(pseudoPlayer+" "+x+" "+y);
 					gui.addMsg(pseudoPlayer+" a cliqué sur la case "+"("+x+","+y+")+\n");
@@ -143,6 +147,24 @@ public class Demineur extends JFrame implements Runnable {
 				
 			}
 			if(cmd==Demineur.START) {
+                try{
+                int tailleX=in.readInt();
+                int tailleY=in.readInt();
+                System.out.println("taille x="+tailleX);
+                System.out.println("taille y="+tailleY);
+
+                System.out.println("got inside the demineur.start");
+                for(int i=0;i<tailleX;i++)
+                    for(int j=0;j<tailleY;j++)
+                        champ.getTab()[i][j]=in.readBoolean();
+
+				gui.placeCases();
+                champ.affText();
+
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
 				gui.addMsg(getPseudo()+" "+ "Go!\n");
 				started=true;
 				
@@ -378,10 +400,25 @@ public boolean isStarted() {return started;}
 		
 		super("D�mineur ISMIN");
 		lev=lv;
-		Champ champ2= new Champ(name,lv); 
+		/*Champ champ2= new Champ(name,lv); 
 		champ=champ2;
-    	champ2.affText();    	    	
-	     gui= new IHMHello(this) ;//Renommer IHMHello � GUi
+        champ2.affText();  
+*/
+        if(solo==false) 	 {
+            //champ.setTabMines(Serveur.getChamp());
+           //champ=Serveur.champ;
+          /* champ=Serveur.getChamp();
+           champ.affText();
+
+           Champ c=Serveur.champ
+            System.out.println("Got inside the !solo if");
+            */
+            champ=new Champ(name,lv); 
+        }   
+        else
+            champ=new Champ(name,lv); 
+
+	    gui= new IHMHello(this) ;//Renommer IHMHello � GUi
 		setContentPane(gui) ;//mettre un panel au milieu		
     	pack();
 		setVisible(true) ;
@@ -400,8 +437,8 @@ public boolean isStarted() {return started;}
     {
     	Level l=new Level(lvl.EASY);
     	new Demineur("Mineur game",l);
-    	Thread main =new Thread();
-    	main.start();
+    	//Thread main =new Thread();
+    	//main.start();
     	
     //	while(main!=null) {
 		//	System.out.println(increment);

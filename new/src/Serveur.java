@@ -36,8 +36,23 @@ public class Serveur extends JFrame implements Runnable{
 	List<Socket> listSocket = new ArrayList<Socket>();
 	//HashMap<String ,Socket > listClients=new HashMap<String ,Socket >();
 	ArrayList<User> listClients=new ArrayList<User>();
-	private static Champ champ=	new Champ("Mineur game", new Level(lvl.EASY));
-	
+	public  static  Champ champ=new Champ("Mineur game", new Level(lvl.EASY));
+    
+    
+/*public static boolean [][] getChamp(){
+
+
+
+    return champ.getTab();
+}
+*/
+
+public static Champ getChamp(){
+
+    return champ;
+}
+
+
 	Serveur(){
 		System.out.println("Démarrage serveur");
 		 gui=new GuiServeur(this);
@@ -45,9 +60,10 @@ public class Serveur extends JFrame implements Runnable{
 		pack();//Redimentionner la frame
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
-		startServer();
+        startServer();
+        //champ =new Champ("Mineur game", new Level(lvl.EASY));
 		caseDiscovered=new boolean[champ.getDimensionX()][champ.getDimensionY()];
-		
+		champ.affText();
 		for(int i=0;i<champ.getDimensionX();i++)
 			for(int j=0;j<champ.getDimensionY();j++)
 				caseDiscovered[i][j]=false;
@@ -115,7 +131,6 @@ public void run(){
 	Thread t =new Thread(this);
 	t.start();//Dans un thread à part 
 	this.listSocket.add(socket);//add the new incoming client
-
 	gui.addMsg(" Nouveau client\n");
 	DataInputStream dis = new DataInputStream(socket.getInputStream());
 	DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
@@ -141,7 +156,7 @@ public void run(){
 		LocalDateTime now1 = LocalDateTime.now(); 
 		Date date1 = new Date();  
 		gui.addMsg(dtf1.format(now1)+" "+message+"\n");
-	
+		
 		System.out.println(message);
 		
 	for(int client=0;client<this.listSocket.size();client++) {//Diffuser aux autre clients

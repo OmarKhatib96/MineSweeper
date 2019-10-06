@@ -30,7 +30,7 @@ public class GuiServeur extends JPanel implements ActionListener {
 	GuiServeur(Serveur serveur){
 		this.serveur=serveur;
 		setLayout(new BorderLayout());
-		add(new JLabel("Serveur Démineur 2019"),BorderLayout.NORTH);
+		add(new JLabel("Serveur Dï¿½mineur 2019"),BorderLayout.NORTH);
 		add(msgAreas,BorderLayout.CENTER);
 		add(startBut,BorderLayout.SOUTH);
 		startBut.addActionListener(this);
@@ -56,10 +56,21 @@ public class GuiServeur extends JPanel implements ActionListener {
 		 //Level lev=Level();
 		if(e.getSource()==startBut ) 
 		{
+			int sizeX=serveur.getChamp().getDimensionX();
+			int sizeY=serveur.getChamp().getDimensionY();
 			for(int clientOut=0;clientOut<this.serveur.getListOut().size();clientOut++) {//Diffuser aux autre clients
 
 				try {
 					this.serveur.getListOut().get(clientOut).writeInt(2);//Commande start
+					serveur.getListOut().get(clientOut).writeInt(sizeX);
+					serveur.getListOut().get(clientOut).writeInt(sizeY);
+					
+					for(int i=0;i<sizeX;i++)
+						for(int j=0;j<sizeY;j++)
+							serveur.getListOut().get(clientOut).writeBoolean(serveur.getChamp().getTab()[i][j]);
+			//Serveur.getChamp().getTab
+
+
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

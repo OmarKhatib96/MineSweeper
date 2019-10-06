@@ -53,9 +53,8 @@ title.setHorizontalTextPosition(JLabel.CENTER);
 
 //case_demineur.paintComponent(gc);
 this.Demin=Demin;
-placeCases();
+//placeCases();
 			
-		
 JPanel panelnorth=new JPanel(new BorderLayout());
 add(panelMines,BorderLayout.CENTER);
  compteur=new Compteur();
@@ -127,14 +126,14 @@ Demin.setJMenuBar(menuBar);
 JMenu menuHelp=new JMenu("Aide");
 menuBar.add(menuHelp);
 menuHelp.add(mAide);
-//Raccourci clavier  à partir du menu
+//Raccourci clavier  ï¿½ partir du menu
 JMenuItem itemExit= new JMenuItem("Exit",KeyEvent.VK_E);
-//Raccourci clavier  à partir de la fenêtre
+//Raccourci clavier  ï¿½ partir de la fenï¿½tre
 
 mQuit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q,ActionEvent.CTRL_MASK));
 
-//Activation désactivation du menu
-mQuit.setEnabled(true);//Pour activer désactiver
+//Activation dï¿½sactivation du menu
+mQuit.setEnabled(true);//Pour activer dï¿½sactiver
 mQuit.addActionListener(this);
 mEasy.addActionListener(this);
 mMedium.addActionListener(this);
@@ -176,8 +175,8 @@ public void actionPerformed(ActionEvent e) {
 	if(e.getSource()==butQuit  || e.getSource()==mQuit) 
 	{
 	
-		int reponse=JOptionPane.showConfirmDialog(null, "êtes-vous sûrs?","Bye-Bye",JOptionPane.YES_NO_OPTION,JOptionPane.ERROR_MESSAGE);
-		if( reponse==JOptionPane.YES_OPTION)//Si l'utilisteur a appuyé sur oui
+		int reponse=JOptionPane.showConfirmDialog(null, "ï¿½tes-vous sï¿½rs?","Bye-Bye",JOptionPane.YES_NO_OPTION,JOptionPane.ERROR_MESSAGE);
+		if( reponse==JOptionPane.YES_OPTION)//Si l'utilisteur a appuyï¿½ sur oui
 		 
 			System.exit(0);
 		}else if(e.getSource()==mNew) {
@@ -207,7 +206,7 @@ public void actionPerformed(ActionEvent e) {
 			newPartie(l);
 
 		}else if(e.getSource()==connexionBut) {
-			String Message="Welcome to the Démineur ISMIN game, please choose a nickname";
+			String Message="Welcome to the Dï¿½mineur ISMIN game, please choose a nickname";
 			String nickname=JOptionPane.showInputDialog(Message);
 			Demin.setPseudo(nickname);
 			//Add pop up window box;
@@ -242,7 +241,7 @@ public void actionPerformed(ActionEvent e) {
 				    //Thread message=new Thread();
 					//message.start();
 					 DataOutputStream out1 = new DataOutputStream(Demin.getSocket().getOutputStream());
-					 out.writeInt(0);//Prévenir le serveur qu'on va envoyer un message
+					 out.writeInt(0);//Prï¿½venir le serveur qu'on va envoyer un message
 				     out1.writeUTF(Demin.getPseudo()+": "+x);
 				     
 				     //Writer wb=new Writer()
@@ -277,7 +276,7 @@ public void actionPerformed(ActionEvent e) {
 	    Demin.getGui().getCompteur().stopCpt();
 		//Demin.getGui().setCompteur(new Compteur());
 	    Demin.newPartie();
-		//Demin.setStarted(false);//réinitialisation
+		//Demin.setStarted(false);//rï¿½initialisation
 		//Demin.setLost(false);
 
 		 		
@@ -294,7 +293,7 @@ public void actionPerformed(ActionEvent e) {
 	    Demin.getGui().getCompteur().stopCpt();
 	    Demin.newPartie();
 		//Demin.getGui().setCompteur(new Compteur());
-		//Demin.setStarted(false);//réinitialisation
+		//Demin.setStarted(false);//rï¿½initialisation
 		//Demin.setLost(false);
  }
  
@@ -323,7 +322,7 @@ public void actionPerformed(ActionEvent e) {
 	 
 	 
  }
- private void  placeCases(){
+ public void  placeCases(){
 	 
 
 

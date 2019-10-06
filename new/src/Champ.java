@@ -2,7 +2,7 @@
 import java.util.*;
 
 public class Champ {
-	//Attributs par défauts
+	//Attributs par dï¿½fauts
 	private final static int NBMINES=0;
 	private final static int DIMEASY=2;
 	private final static int DIMMEDIUM=2;
@@ -18,15 +18,16 @@ public class Champ {
 	
 	private final String NomParDefaut="GAME";
 	 private String name;
-	private static boolean[][] tabMines;//Tableau représentatif du champs		
-	Random alea=new Random();
-	private  int dimX;
-	private int dimY;
-	private  int nbmines=NBMINES;
+	private static  boolean[][] tabMines;//Tableau reprï¿½sentatif du champs		
+	//private static final  int seed=new Random().nextInt();
+	static Random alea=new Random();
+	private static  int dimX;
+	private static int dimY;
+	private static  int nbmines=NBMINES;
 	
 					
 		
-	public   void InitialisationChamp(int dimensionX,int dimensionY, int nbrmines)
+	public static   void InitialisationChamp(int dimensionX,int dimensionY, int nbrmines)
 	{
 		dimX=dimensionX;
 		dimY=dimensionY;
@@ -36,8 +37,16 @@ public class Champ {
 	}
 	
 	
+	public void setTabMines(boolean [][] tabM){
+
+		//tabMines.clone(tabM);
+		tabMines=tabM.clone();
+	//	tabMines.clone()=tabM;
+
+	}
 	
-	public Champ()//constructeur par défaut
+	
+	public Champ()//constructeur par dï¿½faut
 	{
 		
 		this.dimX=DIMEASY;
@@ -48,7 +57,7 @@ public class Champ {
 	}
 
 	
-	public Champ(String name,Level lev)
+	public  Champ(String name,Level lev)
 	{
 		this.name=name;
 		newPartie(lev);
@@ -85,7 +94,7 @@ public class Champ {
 		return nbmines;
 	}
 	
-	public  void placeMines()//Va placer aléatoirement les mines sur le champs
+	public static  void placeMines()//Va placer alï¿½atoirement les mines sur le champs
 	{
 		
 		for(int i=0;i<tabMines.length;i++)
@@ -107,16 +116,16 @@ public class Champ {
 		}
 	}
 	
-	public void affText()//Cette méthode va nous afficher notre champs de mines
+	public void affText()//Cette mï¿½thode va nous afficher notre champs de mines
 	{
 		System.out.println("Notre champs de mines est le suivant:");
 		
 		for(int j=0;j<dimY;j++)
 		{
 			for(int i=0;i<dimX;i++) {
-				if(tabMines[i][j]==true)//Si présence d'une mine
+				if(tabMines[i][j]==true)//Si prï¿½sence d'une mine
 					System.out.print("x  ");
-				else//si pas de présence de mines 
+				else//si pas de prï¿½sence de mines 
 					System.out.print("0  ");
 								
 			}
@@ -164,7 +173,7 @@ public class Champ {
 		   
 	   }
 	 
-	 public  void newPartie(Level lev) {
+	 public static void newPartie(Level lev) {
 		 
 		 	//this.name=name;
 			if (lev.getLevel()==lvl.EASY) {
