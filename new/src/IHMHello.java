@@ -36,6 +36,14 @@ public class IHMHello extends JPanel implements ActionListener {
 
 	private JButton connexionBut=new JButton("Connect");
 	
+
+
+	public void resetPanelMines(){
+
+		panelMines.removeAll();
+
+
+	}
 	private  Case [][] tabCases;
 /** constructeuraddActionListener
 * @param la classe contenant les traitements
@@ -57,16 +65,11 @@ this.Demin=Demin;
 			
 JPanel panelnorth=new JPanel(new BorderLayout());
 add(panelMines,BorderLayout.CENTER);
- compteur=new Compteur();
- Joueur joueur= new Joueur("Joueur1");
- //panelnorth.add(joueur.getPseudo());
-//panel north 
+compteur=new Compteur();
 panelnorth.add(title,BorderLayout.NORTH);
 panelnorth.add(compteur,BorderLayout.CENTER);
 panelSouth= new JPanel(new BorderLayout());
-//JPanel panelConnexion=new JPanel();
 
-//JTextField hostField=new JTextField(20);
 panelConnexion.add(new JLabel("Serveur"));
 hostField=new JTextField("localhost");
 panelConnexion.add(hostField);
@@ -88,9 +91,7 @@ panelSouth.add(msgArea,BorderLayout.NORTH);
 //Writing message area
 Box box = Box.createHorizontalBox();
 add(box, BorderLayout.SOUTH);
-//Demin.getTextField = new JTextField();
-//JTextField inputTextField=new JTextField();
-//sendButton = new JButton("Send");
+
 box.add(inputTextField);
 box.add(sendButton);
 sendButton.addActionListener(this);
@@ -101,11 +102,9 @@ sendButton.addActionListener(this);
 butQuit.setForeground(Color.DARK_GRAY);
 butQuit.setFont(new Font("Papyrus", Font.PLAIN,18));
 butQuit.addActionListener(this);
-//panelSouth.add(butQuit,BorderLayout.SOUTH);
 panelSouth.add(box,BorderLayout.SOUTH);
 
 
-//add(butQuit,BorderLayout.SOUTH);
 
 add(panelSouth,BorderLayout.SOUTH);
 JMenuBar menuBar=new JMenuBar();
@@ -148,8 +147,6 @@ menuLevel.add(mHard);
 
 
 menuPartie.add(menuLevel);
-
-//JMenuItem mnewpartie=new JMenuItem("Nouvelle partie",KeyEvent.VK_Q);
 menuPartie.add(mQuit);
 
 
@@ -171,7 +168,6 @@ public void addMsg(String str) {
 }
 
 public void actionPerformed(ActionEvent e) {
-	 //Level lev=Level();
 	if(e.getSource()==butQuit  || e.getSource()==mQuit) 
 	{
 	
@@ -232,21 +228,10 @@ public void actionPerformed(ActionEvent e) {
 			    try {
 			    
 			    	DataOutputStream out = new DataOutputStream(Demin.getSocket().getOutputStream());
-				    // out.writeUTF("0");
-				//	InputStream input = new FileInputStream(x) ;
-					
-					//InputStream stream = new ByteArrayInputStream(x.getBytes(StandardCharsets.UTF_8));
-					//int count = stream.available(); 
-					//emin.setCmd(0);
-				    //Thread message=new Thread();
-					//message.start();
-					 DataOutputStream out1 = new DataOutputStream(Demin.getSocket().getOutputStream());
-					 out.writeInt(0);//Pr�venir le serveur qu'on va envoyer un message
-				     out1.writeUTF(Demin.getPseudo()+": "+x);
-				     
-				     //Writer wb=new Writer()
-				    // msgArea.write(out);
-				     inputTextField.setText("");
+					DataOutputStream out1 = new DataOutputStream(Demin.getSocket().getOutputStream());
+					out.writeInt(0);//Pr�venir le serveur qu'on va envoyer un message
+				    out1.writeUTF(Demin.getPseudo()+": "+x);
+				    inputTextField.setText("");//Reset the field
 				     
 				
 				} catch (IOException e1) {
@@ -257,13 +242,7 @@ public void actionPerformed(ActionEvent e) {
 				Demin.getDis();
 				
 			}
-			//msgArea
-		}
-	
-	//int x=e.getX();
-    //int y=e.getY();
-    //System.out.println(x+","+y);//these co-ords are relative to the componen
-	 
+		}	 
 	 
  }
  
@@ -274,11 +253,8 @@ public void actionPerformed(ActionEvent e) {
 	 
 	 	
 	    Demin.getGui().getCompteur().stopCpt();
-		//Demin.getGui().setCompteur(new Compteur());
 	    Demin.newPartie();
-		//Demin.setStarted(false);//r�initialisation
-		//Demin.setLost(false);
-
+	
 		 		
 	 
 	 
@@ -286,7 +262,8 @@ public void actionPerformed(ActionEvent e) {
 
  
  private void newPartie(Level l) {
-	 	panelMines.removeAll();
+		resetPanelMines();
+	 	//panelMines.removeAll();
 	 	placeCases();
 	 	Demin.pack();
 
@@ -318,15 +295,13 @@ public void actionPerformed(ActionEvent e) {
  
 
 
-	 System.out.println("I got here");
 	 
 	 
  }
- public void  placeCases(){
-	 
 
 
-//case_demineur.paintComponent(gc);
+
+public void  placeCases(){
 
 int X=Demin.getChamp().getDimensionX();
 int Y=Demin.getChamp().getDimensionY();
@@ -337,8 +312,8 @@ tabCases= new Case[Demin.getChamp().getDimensionX()][Demin.getChamp().getDimensi
 
 
 
-for(int j=0;j<Y;j++) {	
-		for(int i=0;i<X;i++) {
+for(int i=0;i<X;i++) {	
+		for(int j=0;j<Y;j++) {
 			tabCases[i][j]=new Case(i,j,Demin);
 			panelMines.add(tabCases[i][j]);
  }

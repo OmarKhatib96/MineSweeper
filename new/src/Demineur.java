@@ -148,18 +148,33 @@ public class Demineur extends JFrame implements Runnable {
 			}
 			if(cmd==Demineur.START) {
                 try{
+					//Level l=new Level(lvl.EASY);
+
+				//champ=new Champ("Démineur",l); 
+				champ.resetTabMines();
+
                 int tailleX=in.readInt();
                 int tailleY=in.readInt();
                 System.out.println("taille x="+tailleX);
                 System.out.println("taille y="+tailleY);
 
                 System.out.println("got inside the demineur.start");
-                for(int i=0;i<tailleX;i++)
-                    for(int j=0;j<tailleY;j++)
-                        champ.getTab()[i][j]=in.readBoolean();
+                for(int i=0;i<tailleX;i++){
+                    for(int j=0;j<tailleY;j++){
+						champ.setTabMines(in.readBoolean(), i, j);
+					}
+				}
 
+
+						
+				gui.resetPanelMines();
 				gui.placeCases();
-                champ.affText();
+				//pack();
+			   //gui.placeCases();
+			    champ.affText();
+
+			//	gui.placeCases();
+             //   champ.affText();
 
             } catch (IOException e) {
                 // TODO Auto-generated catch block

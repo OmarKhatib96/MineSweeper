@@ -26,8 +26,9 @@ public class Champ {
 	private static  int nbmines=NBMINES;
 	
 					
+	
 		
-	public static   void InitialisationChamp(int dimensionX,int dimensionY, int nbrmines)
+	public    void InitialisationChamp(int dimensionX,int dimensionY, int nbrmines)
 	{
 		dimX=dimensionX;
 		dimY=dimensionY;
@@ -37,10 +38,22 @@ public class Champ {
 	}
 	
 	
-	public void setTabMines(boolean [][] tabM){
+
+	public void resetTabMines(){
+		/*
+		for (int i=0;i<getDimensionX();i++)
+			for (int j=0;j<getDimensionY();j++)
+				tabMines[i][j]=false;
+
+*/
+		tabMines=new boolean [dimX][dimY];
+
+
+	}
+	public void setTabMines(boolean mine,int i,int j){
 
 		//tabMines.clone(tabM);
-		tabMines=tabM.clone();
+		tabMines[i][j]=mine;
 	//	tabMines.clone()=tabM;
 
 	}
@@ -94,7 +107,7 @@ public class Champ {
 		return nbmines;
 	}
 	
-	public static  void placeMines()//Va placer al�atoirement les mines sur le champs
+	public   void placeMines()//Va placer al�atoirement les mines sur le champs
 	{
 		
 		for(int i=0;i<tabMines.length;i++)
@@ -120,9 +133,9 @@ public class Champ {
 	{
 		System.out.println("Notre champs de mines est le suivant:");
 		
-		for(int j=0;j<dimY;j++)
+		for(int i=0;i<dimX;i++)
 		{
-			for(int i=0;i<dimX;i++) {
+			for(int j=0;j<dimY;j++) {
 				if(tabMines[i][j]==true)//Si pr�sence d'une mine
 					System.out.print("x  ");
 				else//si pas de pr�sence de mines 
@@ -173,7 +186,7 @@ public class Champ {
 		   
 	   }
 	 
-	 public static void newPartie(Level lev) {
+	 public  void newPartie(Level lev) {
 		 
 		 	//this.name=name;
 			if (lev.getLevel()==lvl.EASY) {
@@ -193,6 +206,7 @@ public class Champ {
 
 			}
 		 
+			this.affText();
 		 
 	 }
 	 

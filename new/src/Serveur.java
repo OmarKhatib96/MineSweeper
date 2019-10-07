@@ -36,18 +36,12 @@ public class Serveur extends JFrame implements Runnable{
 	List<Socket> listSocket = new ArrayList<Socket>();
 	//HashMap<String ,Socket > listClients=new HashMap<String ,Socket >();
 	ArrayList<User> listClients=new ArrayList<User>();
-	public  static  Champ champ=new Champ("Mineur game", new Level(lvl.EASY));
+	public    Champ champ=new Champ("Mineur game", new Level(lvl.EASY));
     
     
-/*public static boolean [][] getChamp(){
 
 
-
-    return champ.getTab();
-}
-*/
-
-public static Champ getChamp(){
+public  Champ getChamp(){
 
     return champ;
 }
@@ -61,7 +55,6 @@ public static Champ getChamp(){
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		setVisible(true);
         startServer();
-        //champ =new Champ("Mineur game", new Level(lvl.EASY));
 		caseDiscovered=new boolean[champ.getDimensionX()][champ.getDimensionY()];
 		champ.affText();
 		for(int i=0;i<champ.getDimensionX();i++)
@@ -137,7 +130,6 @@ public void run(){
 	//Add to the collection
 	listIn.add(dis);
 	listOut.add(dos);
-	//Get local time
 	LocalDateTime now = LocalDateTime.now(); 
     Date date = new Date();  
 	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
@@ -155,14 +147,12 @@ public void run(){
 		DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
 		LocalDateTime now1 = LocalDateTime.now(); 
 		Date date1 = new Date();  
-		gui.addMsg(dtf1.format(now1)+" "+message+"\n");
-		
+		gui.addMsg(dtf1.format(now1)+" "+message+"\n");	
 		System.out.println(message);
-		
+	//To encapsulate	
 	for(int client=0;client<this.listSocket.size();client++) {//Diffuser aux autre clients
 			DataOutputStream dos1 = new DataOutputStream(listSocket.get(client).getOutputStream());
 				dos1.writeInt(0);
-			//if(!listSocket.get(client).equals(socket))
 				dos1.writeUTF(message);//Envoyer à tous les autres sauf à nous-même
 		
 		}
@@ -176,21 +166,21 @@ public void run(){
 			String NomJoueur=dis.readUTF();
 			System.out.println(x+" "+y+" "+ NomJoueur);
 			//Passer aussi les identifiants
-			for(int client=0;client<this.listSocket.size();client++) {//Diffuser aux autre clients
-				
-					if(!caseDiscovered[x][y]) {
-						caseDiscovered[x][y]=true;
-						DataOutputStream dos1 = new DataOutputStream(listSocket.get(client).getOutputStream());
-						dos.writeInt(1);//prévenir les clients qu'on va envoyer un coordonnées
-						dos1.writeInt(x);
-						dos1.writeInt(y);
-						dos1.writeUTF(NomJoueur);
+			if(!caseDiscovered[x][y]) {
+				for(int client=0;client<this.listSocket.size();client++) {//Diffuser aux autre clients
+					
 						
-					}
+							caseDiscovered[x][y]=true;
+							DataOutputStream dos1 = new DataOutputStream(listSocket.get(client).getOutputStream());
+							dos.writeInt(1);//prévenir les clients qu'on va envoyer un coordonnées
+							dos1.writeInt(x);
+							dos1.writeInt(y);
+							dos1.writeUTF(NomJoueur);
+							
+						}
 					
 					
-				//if(!listSocket.get(client).equals(socket))
-					//dos1.writeUTF(message);//Envoyer à tous les autres sauf à nous-même
+			
 			
 			}
 			
@@ -206,7 +196,6 @@ public void run(){
     
     
 	}
-   //gui.addMsg(Demin.getPseudo()+": "+message);
     
 
 

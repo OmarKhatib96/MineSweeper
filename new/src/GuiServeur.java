@@ -53,11 +53,13 @@ public class GuiServeur extends JPanel implements ActionListener {
 	
 	
 	public void actionPerformed(ActionEvent e) {
-		 //Level lev=Level();
 		if(e.getSource()==startBut ) 
 		{
 			int sizeX=serveur.getChamp().getDimensionX();
+			System.out.println("(serv x="+sizeX);
 			int sizeY=serveur.getChamp().getDimensionY();
+			System.out.println("serv y="+sizeY);
+
 			for(int clientOut=0;clientOut<this.serveur.getListOut().size();clientOut++) {//Diffuser aux autre clients
 
 				try {
