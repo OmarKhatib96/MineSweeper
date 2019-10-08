@@ -285,7 +285,7 @@ public void actionPerformed(ActionEvent e) {
 	tabCases[x][y].setClickedCase();//C'est ça qui permet de modifier la couleur
 	tabCases[x][y].setBackground(c);
 	tabCases[x][y].getGraphics().setColor(c);
-	tabCases[x][y].getGraphics().setPaintMode();
+	//tabCases[x][y].getGraphics().setPaintMode();
 	//tabCases[x][y].repaint();//10/8/2019
 	tabCases[x][y].getGraphics().fillRect(0, 0, getWidth(), getHeight());
 	// tabCases[x][y].getGraphics().fillRect(1, 1, getWidth(), getHeight());	
