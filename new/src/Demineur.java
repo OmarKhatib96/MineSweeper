@@ -11,11 +11,13 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.rmi.UnknownHostException;
+import java.util.Random;
 import java.util.Scanner;
 
 import javax.swing.* ; 
 import java.awt.BorderLayout;
 import java.awt.Button;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.GridBagLayout;
 
@@ -34,6 +36,8 @@ public class Demineur extends JFrame implements Runnable {
     public static final int IDLE=4;
     public static final int GETPSEUDO=5;
 
+    private Color color;
+    private int numeroClient=0;
     private User client;
     private int cmd;
     private Scanner scn = new Scanner(System.in); 
@@ -125,9 +129,12 @@ public class Demineur extends JFrame implements Runnable {
                     int y=in.readInt();
                    
 					String pseudoPlayer=in.readUTF();
+					int color=in.readInt();
+					//int numeroClient=in.readInt();
+					//int colorClient=in.readInt();
 					System.out.println(pseudoPlayer+" "+x+" "+y);
-					gui.addMsg(pseudoPlayer+" a cliqué sur la case "+"("+x+","+y+")+\n");
-
+					gui.addMsg("recu"+" a cliqué sur la case "+"("+x+","+y+")+\n");
+					gui.SetJPanel( x,  y,new Color(color));
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -138,14 +145,17 @@ public class Demineur extends JFrame implements Runnable {
 			
 			if(cmd==Demineur.END) {
 				
-				String msg;
+				/*String msg;
 				started=false;
 				quit();
 				closeSocket();
 				process=null;
 				//out.writeUTF(msg);
+				 * 
+				 */
 				
 			}
+			
 			if(cmd==Demineur.START) {
                 try{
 					//Level l=new Level(lvl.EASY);
@@ -181,7 +191,7 @@ public class Demineur extends JFrame implements Runnable {
                 e.printStackTrace();
             }
 				gui.addMsg(getPseudo()+" "+ "Go!\n");
-				started=true;
+				//started=true;
 				
 				
 			}
@@ -248,8 +258,16 @@ public void setDis( DataInputStream input) {
 		 
 	// sendMessage.start();
 	//} 
+	
+	public int getColorInt() {
+		
+		
+		return color.getRGB();
+	}
 		 
-		 
+	public int getNumeroClient() {
+		return numeroClient;
+	}
 	public void readMessage() {
 
 		 Thread readMessage = new Thread(new Runnable()  
@@ -304,29 +322,9 @@ public void setDis( DataInputStream input) {
 		process=new Thread(this);
 		process.start();
 		connected=true;
-	
-		//gui.addMsg(" Saisissez votre pseudo s'il vous plait : ""\n");
-/*
-		
-		in= new DataInputStream(sock.getInputStream());
-		out=new DataOutputStream(sock.getOutputStream());
-		
-		
-		//client=new User(sock,PseuField,in,out);
-		
-		process=new Thread(this);
-		//if (args.length > 0) // envoi du nom
-			// out.writeUTF(args[0]);
-			 
-			 out.writeUTF("Gros Bill");
-			 int numJoueur = in.readInt(); // reception d�un nombre
-			 System.out.println("Joueur n�:"+numJoueur);
-			 in.close(); // fermeture Stream
-			 out.close();
-			 sock.close() ; // fermeture Socket 
-		//String pseudoJoueur=in.
-		//System.out.println("Joueur n�:"+pseudoJoueur); 
-*/
+		//Lecture du numéro client attribué par le serveur au client
+		//numeroClient=in.readInt();
+		//gui.addMsg("Mon numéro client est: "+numeroClient);
 		
 	}catch(UnknownHostException e) {
 		gui.addMsg("Connexion impossible avec : "+HostField+":"+PortField);
@@ -415,6 +413,7 @@ public boolean isStarted() {return started;}
 		
 		super("D�mineur ISMIN");
 		lev=lv;
+		setRandomColor();
 		/*Champ champ2= new Champ(name,lv); 
 		champ=champ2;
         champ2.affText();  
@@ -463,7 +462,17 @@ public boolean isStarted() {return started;}
 	
     }
     
-    
+  void setRandomColor() {
+	  
+	  Random rand=new Random();
+	  int r=rand.nextInt(256);
+	 int g=rand.nextInt(256);
+	  int b=rand.nextInt(256);
+	  Color randomColor=new Color(r,g,b);
+	  this.color=randomColor;
+
+	  
+  }
   
   //Destructeur
   	protected void finalize() throws Throwable

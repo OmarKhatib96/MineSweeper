@@ -38,7 +38,7 @@ public class Serveur extends JFrame implements Runnable{
 	ArrayList<User> listClients=new ArrayList<User>();
 	public    Champ champ=new Champ("Mineur game", new Level(lvl.EASY));
     
-    
+    private int nombreClients=0;
 
 
 public  Champ getChamp(){
@@ -136,6 +136,11 @@ public void run(){
 	String welcomeMessage=dis.readUTF()+" has just joined the game";//From the IHM
 	//Add to the GUI Server that the player x has joined the game
 	gui.addMsg(dtf.format(now)+" "+welcomeMessage+"\n");
+	//Envoie de son numero:
+	nombreClients++;
+
+	//dos.writeInt(nombreClients);
+
 
 	while(t!=null) {//While the server thread is not  over
 		
@@ -164,18 +169,25 @@ public void run(){
 			int x=dis.readInt();
 			int y=dis.readInt();
 			String NomJoueur=dis.readUTF();
+			int color=dis.readInt();
+			//int numeroJoueur=dis.readInt();
+			//int colorClient=dis.readInt();
 			System.out.println(x+" "+y+" "+ NomJoueur);
 			//Passer aussi les identifiants
 			if(!caseDiscovered[x][y]) {
+				caseDiscovered[x][y]=true;
+
 				for(int client=0;client<this.listSocket.size();client++) {//Diffuser aux autre clients
 					
 						
-							caseDiscovered[x][y]=true;
 							DataOutputStream dos1 = new DataOutputStream(listSocket.get(client).getOutputStream());
-							dos.writeInt(1);//prévenir les clients qu'on va envoyer un coordonnées
+							dos1.writeInt(1);//prévenir les clients qu'on va envoyer un coordonnées
 							dos1.writeInt(x);
 							dos1.writeInt(y);
 							dos1.writeUTF(NomJoueur);
+							dos1.writeInt(color);
+							//dos1.writeInt(numeroJoueur);
+							//dos1.writeInt(colorClient);
 							
 						}
 					

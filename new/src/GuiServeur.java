@@ -21,6 +21,7 @@ public class GuiServeur extends JPanel implements ActionListener {
 	private Serveur serveur;
 	private JTextArea msgAreas=new JTextArea(20,20);
 	
+	
 	public Serveur getServeur()
 	{
 		return this.serveur;
@@ -53,6 +54,7 @@ public class GuiServeur extends JPanel implements ActionListener {
 	
 	
 	public void actionPerformed(ActionEvent e) {
+		
 		if(e.getSource()==startBut ) 
 		{
 			int sizeX=serveur.getChamp().getDimensionX();
