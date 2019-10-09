@@ -10,12 +10,19 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
+
+
+
+import javax.swing.text.AttributeSet;
+import javax.swing.text.SimpleAttributeSet;
+import javax.swing.text.StyleConstants;
+import javax.swing.text.StyleContext;
 
 public class IHMHello extends JPanel implements ActionListener {
 	
 	private JButton butQuit =new JButton("Quit") ;//Les mettre en attributs pour qu'ils soient accessible dans la classe
 	private JButton sendButton = new JButton("Send");
-
 	private JMenuItem mQuit=new JMenuItem("Quitter",KeyEvent.VK_Q);//
 	private JMenuItem mNew=new JMenuItem("Nouvelle Partie",KeyEvent.VK_Q);//
 	private Demineur Demin;
@@ -30,7 +37,9 @@ public class IHMHello extends JPanel implements ActionListener {
 	private JTextField hostField=new JTextField(Demineur.HOSTNAME,20);
 	private JTextField portField=new JTextField(String.valueOf(Demineur.PORT),6);
 	private JTextField pseudoField=new JTextField(Demineur.PSEUDO,15);
-	private JTextArea msgArea;
+    //tPane = new JTextPane();                
+
+	private JTextPane msgArea;
 	private JTextField inputTextField=new JTextField();
 	//msgArea=new  JTextArea(10,20);
 
@@ -80,13 +89,32 @@ connexionBut.addActionListener(this);
 panelnorth.add(panelConnexion,BorderLayout.SOUTH);
 
 add(panelnorth,BorderLayout.NORTH);
+EmptyBorder eb = new EmptyBorder(new Insets(12, 12, 12, 12));
+
+//tPane = new JTextPane();                
 
 //text area
-msgArea=new  JTextArea(5,20);
+//msgArea=new  JTextArea(5,20);
+msgArea=new JTextPane();
 
-msgArea.append("Bonne Partie\n");
+msgArea.setBorder(eb);
+//tPane.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
+msgArea.setMargin(new Insets(15, 15, 15, 15));
+//jsp.getViewport().add(msgArea);
+
+JScrollPane jsp = new JScrollPane(msgArea);
+
+jsp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
+
+jsp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+
+jsp.getViewport().add(msgArea);
+
+
 panelSouth.add(msgArea,BorderLayout.NORTH);
-
+panelSouth.add(jsp);
+//this.add(jsp);
+//panelSouth.add(jsp);
 
 //Writing message area
 Box box = Box.createHorizontalBox();
@@ -108,17 +136,14 @@ panelSouth.add(box,BorderLayout.SOUTH);
 
 add(panelSouth,BorderLayout.SOUTH);
 JMenuBar menuBar=new JMenuBar();
-
 //Le menu Partie
 JMenu menuPartie=new JMenu("Partie");
 menuBar.add(menuPartie);
 JMenuItem mAide=new JMenuItem("Aide",KeyEvent.VK_Q);
 //menuPartie.add(mQuit);
 menuBar.add(Box.createGlue());//To add between the 2 adds
-
 mQuit.addActionListener(this);
 mNew.addActionListener(this);
-
 menuPartie.add(mQuit);
 menuPartie.add(mNew);
 Demin.setJMenuBar(menuBar);
@@ -128,43 +153,41 @@ menuHelp.add(mAide);
 //Raccourci clavier  ï¿½ partir du menu
 JMenuItem itemExit= new JMenuItem("Exit",KeyEvent.VK_E);
 //Raccourci clavier  ï¿½ partir de la fenï¿½tre
-
 mQuit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q,ActionEvent.CTRL_MASK));
-
 //Activation dï¿½sactivation du menu
 mQuit.setEnabled(true);//Pour activer dï¿½sactiver
 mQuit.addActionListener(this);
 mEasy.addActionListener(this);
 mMedium.addActionListener(this);
 mHard.addActionListener(this);
-
-
 //Level
 JMenu menuLevel=new JMenu("Niveaux");
 menuLevel.add(mEasy);
 menuLevel.add(mMedium);
 menuLevel.add(mHard);
-
-
 menuPartie.add(menuLevel);
 menuPartie.add(mQuit);
 
-
-
 }
- 
  
  public Compteur getCompteur() {
 	return compteur;
 }
 
-
 public void setCompteur(Compteur compteur) {
 	this.compteur = compteur;
 }
 
-public void addMsg(String str) {
-	msgArea.append(str);	
+public void addMsg(String str,Color c) {
+	//msgArea.replaceSelection(str);	
+	    StyleContext sc = StyleContext.getDefaultStyleContext();
+        AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
+        aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Lucida Console");
+        aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
+        int len = msgArea.getDocument().getLength();
+        msgArea.setCaretPosition(len);
+        msgArea.setCharacterAttributes(aset, false);
+        msgArea.replaceSelection(str);
 }
 
 public void actionPerformed(ActionEvent e) {
@@ -217,20 +240,19 @@ public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
-			Demin.setCmd(5);//To get the pseud
 
 			
 		}else if(e.getSource()==sendButton ) {
-			System.out.println("Button send!!!!");
+			//System.out.println("Button send!!!!");
 			String x = inputTextField.getText();
 			if(!x.isEmpty()) {
 				
 			    try {
 			    
 			    	DataOutputStream out = new DataOutputStream(Demin.getSocket().getOutputStream());
-					DataOutputStream out1 = new DataOutputStream(Demin.getSocket().getOutputStream());
 					out.writeInt(0);//Prï¿½venir le serveur qu'on va envoyer un message
-				    out1.writeUTF(Demin.getPseudo()+": "+x);
+					out.writeInt(Demin.getColorInt());//Envoi de la couleur aussi
+				    out.writeUTF(Demin.getPseudo()+": "+x);
 				    inputTextField.setText("");//Reset the field
 				     
 				
@@ -263,42 +285,21 @@ public void actionPerformed(ActionEvent e) {
  
  private void newPartie(Level l) {
 		resetPanelMines();
-	 	//panelMines.removeAll();
 	 	placeCases();
 	 	Demin.pack();
-
 	    Demin.getGui().getCompteur().stopCpt();
 	    Demin.newPartie();
-		//Demin.getGui().setCompteur(new Compteur());
-		//Demin.setStarted(false);//rï¿½initialisation
-		//Demin.setLost(false);
+		
  }
  
  
  public void SetJPanel(int x, int y,Color c)
- {
-	 
-	 
-	//Case  nouvelleCase=new  Case ( x,  y, Demin);
-	//nouvelleCase.getGraphics().setColor(c);
-	//tabCases[x][y]=nouvelleCase;
-	tabCases[x][y].setClickedCase();//C'est ça qui permet de modifier la couleur
+ {	
+	tabCases[x][y].setClickedCase();//C'est ï¿½a qui permet de modifier la couleur
 	tabCases[x][y].setBackground(c);
 	tabCases[x][y].getGraphics().setColor(c);
-	//tabCases[x][y].getGraphics().setPaintMode();
-	//tabCases[x][y].repaint();//10/8/2019
 	tabCases[x][y].getGraphics().fillRect(0, 0, getWidth(), getHeight());
-	// tabCases[x][y].getGraphics().fillRect(1, 1, getWidth(), getHeight());	
-	 //tabCases[x][y].paintComponent( tabCases[x][y].getGraphics());
-			
-	//tabCases[x][y].repaint();//10/8/2019
-	
-	//panelMines.repaint();
- 
-
-
-	 
-	 
+		 
  }
 
 

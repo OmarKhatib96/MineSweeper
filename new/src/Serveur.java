@@ -147,7 +147,8 @@ public void run(){
 		int cmd=dis.readInt();
 
 		
-		if(cmd==0) {
+		if(cmd==0) {//Pour envoyer un message
+		int couleurClient=dis.readInt();
 		String message=dis.readUTF();//receive messages from the IHM
 		DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
 		LocalDateTime now1 = LocalDateTime.now(); 
@@ -158,22 +159,22 @@ public void run(){
 	for(int client=0;client<this.listSocket.size();client++) {//Diffuser aux autre clients
 			DataOutputStream dos1 = new DataOutputStream(listSocket.get(client).getOutputStream());
 				dos1.writeInt(0);
-				dos1.writeUTF(message);//Envoyer à tous les autres sauf à nous-même
+				dos1.writeInt(couleurClient);
+				
+				dos1.writeUTF(message+'\n');//Envoyer à tous les autres sauf à nous-même
 		
 		}
 	
 		}
 		
-		if(cmd==1) {
+		if(cmd==1) {//Pour envoyer la position de la case cliquée
 			
 			int x=dis.readInt();
 			int y=dis.readInt();
 			String NomJoueur=dis.readUTF();
 			int color=dis.readInt();
 			//int numeroJoueur=dis.readInt();
-			//int colorClient=dis.readInt();
 			System.out.println(x+" "+y+" "+ NomJoueur);
-			//Passer aussi les identifiants
 			if(!caseDiscovered[x][y]) {
 				caseDiscovered[x][y]=true;
 

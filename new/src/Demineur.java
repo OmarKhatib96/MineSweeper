@@ -18,6 +18,8 @@ import javax.swing.* ;
 import java.awt.BorderLayout;
 import java.awt.Button;
 import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.GridBagLayout;
 
@@ -90,6 +92,20 @@ public class Demineur extends JFrame implements Runnable {
 	public void setCmd(int cmd) {
 		this.cmd=cmd;
 	}
+	
+	/*public void paint(Graphics g) {
+	    Dimension d = this.getPreferredSize();
+	    int fontSize = 20;
+
+	    g.setFont(new Font("TimesRoman", Font.PLAIN, fontSize));
+	     
+	    g.setColor(Color.red);
+	    
+	    g.drawString("www.java2s.com", 10, 20);
+	  }
+
+	
+	*/
 	//Boucle d'attente des �vts du serveur
 	public void run() {
 		
@@ -107,9 +123,9 @@ public class Demineur extends JFrame implements Runnable {
 
 				String msg;
 				try {
-					msg = in.readUTF();
-					gui.addMsg(msg+'\n');
-					System.out.println("from client"+msg);
+					  int couleurClient=in.readInt();
+						msg = in.readUTF();
+						gui.addMsg(msg,new Color(couleurClient));
 
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
@@ -126,14 +142,13 @@ public class Demineur extends JFrame implements Runnable {
 				
 				try {
 					int x=in.readInt();
-                    int y=in.readInt();
-                   
+                    int y=in.readInt();                  
 					String pseudoPlayer=in.readUTF();
 					int color=in.readInt();
 					//int numeroClient=in.readInt();
 					//int colorClient=in.readInt();
 					System.out.println(pseudoPlayer+" "+x+" "+y);
-					gui.addMsg("recu"+" a cliqué sur la case "+"("+x+","+y+")+\n");
+					gui.addMsg("recu"+" a cliqué sur la case "+"("+x+","+y+")+\n",this.color);
 					gui.SetJPanel( x,  y,new Color(color));
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
@@ -190,7 +205,7 @@ public class Demineur extends JFrame implements Runnable {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
-				gui.addMsg(getPseudo()+" "+ "Go!\n");
+				gui.addMsg(getPseudo()+" "+ "Go!\n",this.color);
 				//started=true;
 				
 				
@@ -317,7 +332,7 @@ public void setDis( DataInputStream input) {
 		sock=new Socket(HostField,PortField);
 		in=new DataInputStream (sock.getInputStream());
 		out= new DataOutputStream (sock.getOutputStream());
-		gui.addMsg(" Connexion r�ussie avec : "+HostField+":"+PortField+"\n");
+		gui.addMsg(" Connexion réussie avec : "+HostField+":"+PortField+"\n",this.color);
 		cmd=IDLE;
 		process=new Thread(this);
 		process.start();
@@ -327,7 +342,7 @@ public void setDis( DataInputStream input) {
 		//gui.addMsg("Mon numéro client est: "+numeroClient);
 		
 	}catch(UnknownHostException e) {
-		gui.addMsg("Connexion impossible avec : "+HostField+":"+PortField);
+		gui.addMsg("Connexion impossible avec : "+HostField+":"+PortField,this.color);
 		e.printStackTrace();
 	
 		
@@ -451,13 +466,7 @@ public boolean isStarted() {return started;}
     {
     	Level l=new Level(lvl.EASY);
     	new Demineur("Mineur game",l);
-    	//Thread main =new Thread();
-    	//main.start();
-    	
-    //	while(main!=null) {
-		//	System.out.println(increment);
-		//}
-    	
+    
     	
 	
     }
@@ -486,7 +495,7 @@ public boolean isStarted() {return started;}
   	System.exit(0) ;
   	 } 
 	
-    
+
 }
 
 
