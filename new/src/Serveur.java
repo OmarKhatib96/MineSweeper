@@ -36,7 +36,7 @@ public class Serveur extends JFrame implements Runnable{
 	List<Socket> listSocket = new ArrayList<Socket>();
 	//HashMap<String ,Socket > listClients=new HashMap<String ,Socket >();
 	ArrayList<User> listClients=new ArrayList<User>();
-	public    Champ champ=new Champ("Mineur game", new Level(lvl.EASY));
+	public    Champ champ=new Champ("Mineur game", new Level(lvl.MEDIUM));
     
     private int nombreClients=0;
 

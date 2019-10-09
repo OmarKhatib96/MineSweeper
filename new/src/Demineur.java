@@ -42,12 +42,13 @@ public class Demineur extends JFrame implements Runnable {
     private int numeroClient=0;
     private User client;
     private int cmd;
-    private Scanner scn = new Scanner(System.in); 
     private boolean connected=false;
     public static int increment=0;
     private static String text;
     //private boolean ButtonSent=false;
-    private JTextField inputTextField;//For each client
+	private JTextField inputTextField;//For each client
+	
+	private Chat chat;
 
     //private static Champ champ=	new Champ("Mineur game", new Level(lvl.EASY));
     private static Champ champ;
@@ -56,7 +57,7 @@ public class Demineur extends JFrame implements Runnable {
 	private boolean started=false;
 	private static IHMHello gui;
 	private boolean lost=false;
-	JTextArea msgArea=new  JTextArea(5,20);
+	//JTextArea msgArea=new  JTextArea(5,20);10/9/2019
 	private  Thread process;
 	
 	private  DataInputStream in;
@@ -93,19 +94,7 @@ public class Demineur extends JFrame implements Runnable {
 		this.cmd=cmd;
 	}
 	
-	/*public void paint(Graphics g) {
-	    Dimension d = this.getPreferredSize();
-	    int fontSize = 20;
-
-	    g.setFont(new Font("TimesRoman", Font.PLAIN, fontSize));
-	     
-	    g.setColor(Color.red);
-	    
-	    g.drawString("www.java2s.com", 10, 20);
-	  }
-
 	
-	*/
 	//Boucle d'attente des �vts du serveur
 	public void run() {
 		
@@ -125,6 +114,7 @@ public class Demineur extends JFrame implements Runnable {
 				try {
 					  int couleurClient=in.readInt();
 						msg = in.readUTF();
+					
 						gui.addMsg(msg,new Color(couleurClient));
 
 				} catch (IOException e) {
@@ -147,8 +137,6 @@ public class Demineur extends JFrame implements Runnable {
 					int color=in.readInt();
 					//int numeroClient=in.readInt();
 					//int colorClient=in.readInt();
-					System.out.println(pseudoPlayer+" "+x+" "+y);
-					gui.addMsg("recu"+" a cliqué sur la case "+"("+x+","+y+")+\n",this.color);
 					gui.SetJPanel( x,  y,new Color(color));
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
@@ -180,6 +168,8 @@ public class Demineur extends JFrame implements Runnable {
 
                 int tailleX=in.readInt();
                 int tailleY=in.readInt();
+                this.champ.InitialisationChamp(tailleX, tailleY, 0);
+
                 System.out.println("taille x="+tailleX);
                 System.out.println("taille y="+tailleY);
 
@@ -337,6 +327,8 @@ public void setDis( DataInputStream input) {
 		process=new Thread(this);
 		process.start();
 		connected=true;
+		//chat=new Chat(this);
+
 		//Lecture du numéro client attribué par le serveur au client
 		//numeroClient=in.readInt();
 		//gui.addMsg("Mon numéro client est: "+numeroClient);
@@ -429,10 +421,7 @@ public boolean isStarted() {return started;}
 		super("D�mineur ISMIN");
 		lev=lv;
 		setRandomColor();
-		/*Champ champ2= new Champ(name,lv); 
-		champ=champ2;
-        champ2.affText();  
-*/
+
         if(solo==false) 	 {
             //champ.setTabMines(Serveur.getChamp());
            //champ=Serveur.champ;

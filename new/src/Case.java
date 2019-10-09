@@ -14,16 +14,21 @@ import java.awt.Color;
 
 class Case extends JPanel implements MouseListener{
 	private String txt = "X";
-	private final static int DIM=30 ;
+	private final static int DIM=5 ;
 	private int x;
 	private int y;
 	private Demineur demin;
 	private boolean clicked=false;//10/07/2019
+	
+	private Color couleurFOnd=new Color(200,200,200);
+	private Color couleurBord=new Color(60,60,100);
+	private Color overBorderColor = new Color(188, 188, 228);
 
 	public Case (int x, int y,Demineur Demin) {//passer position
 		this.x=x;
 		this.y=y;
 		this.demin=Demin;//Recopie dans le constructeur
+		this.setBorder(BorderFactory.createLineBorder(couleurBord));
 		setPreferredSize(new Dimension(DIM, DIM)); // taille de la case
 		addMouseListener(this); // ajout listener souris
 	}
@@ -36,8 +41,19 @@ class Case extends JPanel implements MouseListener{
 		super.paintComponent(gc); // appel m�thode m�re (efface le dessin pr�cedent)
 		//gc.drawRect(1,1,2,2);
 		if(!clicked) {
-			gc.setColor(new Color(158,158,158)); // grey 
-			gc.fillRect(1, 1, getWidth(), getHeight());
+			BufferedImage image;
+			try {
+
+				image=ImageIO.read(new File("new/img/overCase.img"));
+				gc.drawImage(image, 1, 1, this.getWidth(), this.getHeight(), this);
+
+			}catch (IOException e) {
+				System.out.println("There is no such image file");
+				e.printStackTrace();
+			}
+			//gc.setColor(new Color(128,158,158)); // grey 
+			//this.setBackground(couleurFOnd);
+			//gc.fillRect(2, 2, getWidth(), getHeight());
 		}else {
 			
 			
@@ -45,7 +61,7 @@ class Case extends JPanel implements MouseListener{
 				BufferedImage image;
 				try {
 
-					image=ImageIO.read(new File("img/mine.png"));
+					image=ImageIO.read(new File("new/img/mine.png"));
 					gc.drawImage(image, 0, 0, this.getWidth(), this.getHeight(), this);
 
 				}catch (IOException e) {
@@ -61,8 +77,19 @@ class Case extends JPanel implements MouseListener{
 
 
 				}else {
+					BufferedImage image;
+					try {
+
+						image=ImageIO.read(new File("new/img/"+String.valueOf(demin.getChamp().nbr_mines(x, y))+".img"));
+						gc.drawImage(image, 1, 1, this.getWidth(), this.getHeight(), this);
+
+					}catch (IOException e) {
+						System.out.println("There is no such image file");
+						e.printStackTrace();
+					}
 					
-					gc.drawString(String.valueOf(demin.getChamp().nbr_mines(x,y)),getWidth()/2,getHeight()/2);
+					
+					//gc.drawString(String.valueOf(demin.getChamp().nbr_mines(x,y)),getWidth()/2,getHeight()/2);
 
 				}
 			}
@@ -72,7 +99,7 @@ class Case extends JPanel implements MouseListener{
 	/** la gestion de la souris */
 
 	
-	
+
 	public  void setClickedCase() {
 		
 		clicked=true;

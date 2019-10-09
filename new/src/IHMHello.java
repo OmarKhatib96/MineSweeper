@@ -62,19 +62,27 @@ public class IHMHello extends JPanel implements ActionListener {
 setBackground(Color.black);
 
 //ImageIcon quitIcon = new ImageIcon("sortieCLR.gif"); // image
-JLabel title = new JLabel("Welcome on board");
+JLabel title = new JLabel("                                           Welcome on board");
+title.setForeground(Color.DARK_GRAY);
+title.setFont(new Font("TimesRoman", Font.BOLD,18));
+Color titleColor=new Color(128,128,128);
+title.setBackground(titleColor);
 
 setLayout(new BorderLayout());
-title.setHorizontalTextPosition(JLabel.CENTER);
+title.setHorizontalTextPosition(JLabel.NORTH_EAST);
 //Case case_demineur=new Case();
-
+title.setBorder(BorderFactory.createLineBorder(titleColor));
 //case_demineur.paintComponent(gc);
 this.Demin=Demin;
 //placeCases();
 			
 JPanel panelnorth=new JPanel(new BorderLayout());
+
+//panelnorth.set
 add(panelMines,BorderLayout.CENTER);
 compteur=new Compteur();
+compteur.setBackground(titleColor);
+compteur.setBorder(BorderFactory.createLineBorder(titleColor));
 panelnorth.add(title,BorderLayout.NORTH);
 panelnorth.add(compteur,BorderLayout.CENTER);
 panelSouth= new JPanel(new BorderLayout());
@@ -85,10 +93,17 @@ panelConnexion.add(hostField);
 panelConnexion.add(pseudoField);
 panelConnexion.add(portField);
 panelConnexion.add(connexionBut);
+
+Color couleurConnexion=new Color(178, 66, 2);
+panelConnexion.setBackground(couleurConnexion);
+panelConnexion.setBorder(BorderFactory.createLineBorder(titleColor));
+
 connexionBut.addActionListener(this);
 panelnorth.add(panelConnexion,BorderLayout.SOUTH);
 
 add(panelnorth,BorderLayout.NORTH);
+panelnorth.setBackground(titleColor);
+
 EmptyBorder eb = new EmptyBorder(new Insets(12, 12, 12, 12));
 
 //tPane = new JTextPane();                
@@ -261,7 +276,6 @@ public void actionPerformed(ActionEvent e) {
 					e1.printStackTrace();
 				}
 			   
-				Demin.getDis();
 				
 			}
 		}	 

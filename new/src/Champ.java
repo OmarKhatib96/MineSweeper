@@ -7,9 +7,9 @@ public class Champ {
 	private final static int DIMEASY=2;
 	private final static int DIMMEDIUM=2;
 	private final static int DIMHARD=2;
-	private final static int NBMINESEASY=3;
-	private final static int NBMINESMEDIUM=5;
-	private final static int NBMINESHARD=10;
+	private final static int NBMINESEASY=8;
+	private final static int NBMINESMEDIUM=40;
+	private final static int NBMINESHARD=80;
 
 
 				

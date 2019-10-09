@@ -12,8 +12,8 @@ import javax.swing.*;
 public class Compteur extends JPanel implements Runnable {
 	private Thread processScores;
 	private int counter=0;
-	private static int WIDTH=100;
-	private static int HEIGHT=80;
+	private static int WIDTH=50;
+	private static int HEIGHT=50;
 	Compteur(int nbJoueur){
 		processScores=new Thread(this);
 		processScores.start();
@@ -30,7 +30,7 @@ public class Compteur extends JPanel implements Runnable {
 		
 		while(processScores!=null)
 				try {
-					repaint();//on est dans le composant lui-même
+					repaint();//on est dans le composant lui-mï¿½me
 					processScores.sleep(1000);
 					//affScores();
 					counter++;
@@ -66,12 +66,24 @@ public class Compteur extends JPanel implements Runnable {
 	}
 	
 	public void paintComponent(Graphics gc) {
-		super.paintComponent(gc);//ça efface correctment le composant
-		gc.setColor(new Color(255,87,34));//		
-		super.paintComponent(gc); // appel méthode mère (efface le dessin précedent)
+		super.paintComponent(gc);//ï¿½a efface correctment le composant
+		gc.setColor(new Color(0,0,0));//		
+		super.paintComponent(gc); // appel mï¿½thode mï¿½re (efface le dessin prï¿½cedent)
+	/*	BufferedImage image;
+			try {
+
+				image=ImageIO.read(new File("new/img/chrono.jpg"));
+				gc.drawImage(image, 80, 70, this.getWidth(), this.getHeight(), this);
+
+			}catch (IOException e) {
+				System.out.println("There is no such image file");
+				e.printStackTrace();
+			}
+			*/
 		gc.drawString(String.valueOf(counter),getWidth()/2,getHeight()/2);
-		gc.setColor(new Color(0,150,136));
+		gc.setColor(new Color(0,0,0));
 		gc.drawRect(0,0,getWidth()-1,getHeight()-1);
+
 
 }
 
