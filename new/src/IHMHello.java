@@ -54,7 +54,14 @@ public class IHMHello extends JPanel implements ActionListener {
 
 	}
 	private  Case [][] tabCases;
-/** constructeuraddActionListener
+
+
+
+	public Case[][] getTabCases(){
+
+		return tabCases;
+	}
+/** constructeuraddActionListen
 * @param la classe contenant les traitements
 */
  public IHMHello(Demineur Demin) {
@@ -240,9 +247,26 @@ public void actionPerformed(ActionEvent e) {
 			newPartie(l);
 
 		}else if(e.getSource()==connexionBut) {
-			String Message="Welcome to the D�mineur ISMIN game, please choose a nickname";
+			
+			String Message="Please enter your nickname\n";
+			String pseudofield = pseudoField.getText();
+
+			while(pseudofield.isEmpty()) {
+			
 			String nickname=JOptionPane.showInputDialog(Message);
-			Demin.setPseudo(nickname);
+
+			}
+			
+		
+
+				Demin.setPseudo(pseudofield);
+			
+			
+			
+		   
+
+			
+		 
 			//Add pop up window box;
 			DataOutputStream out;
 			
@@ -258,7 +282,6 @@ public void actionPerformed(ActionEvent e) {
 
 			
 		}else if(e.getSource()==sendButton ) {
-			//System.out.println("Button send!!!!");
 			String x = inputTextField.getText();
 			if(!x.isEmpty()) {
 				
@@ -272,7 +295,6 @@ public void actionPerformed(ActionEvent e) {
 				     
 				
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 			   

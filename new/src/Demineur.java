@@ -163,7 +163,11 @@ public class Demineur extends JFrame implements Runnable {
                 try{
 					//Level l=new Level(lvl.EASY);
 
-				//champ=new Champ("Démineur",l); 
+				//champ=new Champ("Démineur",l);
+				this.gui.repaint();
+				this.gui.getCompteur().stopCpt();
+				this.setStarted(false);
+				this.setLost(false);
 				champ.resetTabMines();
 
                 int tailleX=in.readInt();
@@ -184,7 +188,7 @@ public class Demineur extends JFrame implements Runnable {
 						
 				gui.resetPanelMines();
 				gui.placeCases();
-				//pack();
+				//pack();//10/10/201*
 			   //gui.placeCases();
 			    champ.affText();
 
@@ -206,13 +210,7 @@ public class Demineur extends JFrame implements Runnable {
 		
 		}
 		
-		//boucle infinie
-		
-		//lecture dans in
-		
-		//Lecture de la commande
-		
-		//lecture du joueur qui a cliqu� en  x,y
+	
 
 		
 		//En fct de ce que je lis: j'affiche les mines/numeros/fin de partie

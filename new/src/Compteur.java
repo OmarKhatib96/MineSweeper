@@ -80,6 +80,7 @@ public class Compteur extends JPanel implements Runnable {
 				e.printStackTrace();
 			}
 			*/
+	//	gc.eq
 		gc.drawString(String.valueOf(counter),getWidth()/2,getHeight()/2);
 		gc.setColor(new Color(0,0,0));
 		gc.drawRect(0,0,getWidth()-1,getHeight()-1);

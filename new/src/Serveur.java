@@ -57,11 +57,16 @@ public  Champ getChamp(){
         startServer();
 		caseDiscovered=new boolean[champ.getDimensionX()][champ.getDimensionY()];
 		champ.affText();
-		for(int i=0;i<champ.getDimensionX();i++)
-			for(int j=0;j<champ.getDimensionY();j++)
-				caseDiscovered[i][j]=false;
+		resetCaseDiscovered();
 
 		
+	}
+
+	public void resetCaseDiscovered(){
+		for(int i=0;i<champ.getDimensionX();i++)
+		for(int j=0;j<champ.getDimensionY();j++)
+			caseDiscovered[i][j]=false;
+
 	}
 	public static void main(String[] args) {
 		
