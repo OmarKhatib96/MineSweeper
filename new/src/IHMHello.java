@@ -69,10 +69,10 @@ public class IHMHello extends JPanel implements ActionListener {
 setBackground(Color.black);
 
 //ImageIcon quitIcon = new ImageIcon("sortieCLR.gif"); // image
-JLabel title = new JLabel("                                           Welcome on board");
+JLabel title = new JLabel("Welcome on board");
 title.setForeground(Color.DARK_GRAY);
 title.setFont(new Font("TimesRoman", Font.BOLD,18));
-Color titleColor=new Color(128,128,128);
+Color titleColor=new Color(123,123,123);
 title.setBackground(titleColor);
 
 setLayout(new BorderLayout());
@@ -101,7 +101,7 @@ panelConnexion.add(pseudoField);
 panelConnexion.add(portField);
 panelConnexion.add(connexionBut);
 
-Color couleurConnexion=new Color(178, 66, 2);
+Color couleurConnexion=new Color(Demin.getColorInt());
 panelConnexion.setBackground(couleurConnexion);
 panelConnexion.setBorder(BorderFactory.createLineBorder(titleColor));
 
@@ -109,7 +109,7 @@ connexionBut.addActionListener(this);
 panelnorth.add(panelConnexion,BorderLayout.SOUTH);
 
 add(panelnorth,BorderLayout.NORTH);
-panelnorth.setBackground(titleColor);
+panelnorth.setBackground(couleurConnexion);
 
 EmptyBorder eb = new EmptyBorder(new Insets(12, 12, 12, 12));
 
@@ -260,7 +260,8 @@ public void actionPerformed(ActionEvent e) {
 		
 
 				Demin.setPseudo(pseudofield);
-			
+				connexionBut.setEnabled(false);
+
 			
 			
 		   

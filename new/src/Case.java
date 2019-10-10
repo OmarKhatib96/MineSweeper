@@ -1,9 +1,9 @@
 
-
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.*;
 import java.awt.image.BufferedImage;
+import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 
@@ -146,9 +146,24 @@ class Case extends JPanel implements MouseListener{
 				
 		if(demin.getChamp().Ismin(x, y)) {
 			
+			DataOutputStream out= new DataOutputStream (demin.getDos());
+				try {
+					out.writeInt(10);
+					out.writeBoolean(true);
+
+					out.writeUTF(demin.getPseudo());
+					out.writeInt(this.demin.getGui().getCompteur().GetCounter());
+					out.writeInt(this.demin.Get_nbr_cases_decouvertes());
+					out.writeInt(this.demin.getColorInt());
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			JOptionPane.showMessageDialog(null, "You lost !!! Your score is "+String.valueOf(demin.Get_nbr_cases_decouvertes())+" boxes found with Time: "+String.valueOf(demin.getGui().getCompteur().GetCounter())+" seconds");
 
 			demin.setLost(true);
+			
+			
 			demin.getGui().getCompteur().stopCpt();
 
 		}else {

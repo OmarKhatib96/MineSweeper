@@ -33,7 +33,9 @@ public class Demineur extends JFrame implements Runnable {
 	public static  String PSEUDO="Omar";
     public static final  int  MSG=0;
     public static final  int  POS=1;
-    public static final  int  START=2;
+	public static final  int  START=2;
+	public static final  int  LOST=10;
+
     public static final  int  END=3;
     public static final int IDLE=4;
     public static final int GETPSEUDO=5;
@@ -108,7 +110,6 @@ public class Demineur extends JFrame implements Runnable {
 					e1.printStackTrace();
 				}
 			if(cmd==Demineur.MSG) {//Envoie d'un message par le serveur
-				System.out.println("Button pressed ok");
 
 				String msg;
 				try {
@@ -116,7 +117,7 @@ public class Demineur extends JFrame implements Runnable {
 						msg = in.readUTF();
 					
 						gui.addMsg(msg,new Color(couleurClient));
-
+						System.out.println("Got inside the lost function");
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -159,6 +160,13 @@ public class Demineur extends JFrame implements Runnable {
 				
 			}
 			
+		//	if(cmd==Demineur.LOST){
+
+
+
+		//	}
+
+
 			if(cmd==Demineur.START) {
                 try{
 					//Level l=new Level(lvl.EASY);
@@ -380,11 +388,12 @@ public void setDis( DataInputStream input) {
 		return lost;
 	}
 	
+	public IHMHello getGui(){
+
+		return gui;
+	}
 	public void setLost(boolean lost) {
 		this.lost=lost;
-	}
-	public IHMHello getGui() {
-		return gui;
 	}
 
 	public void setGui(IHMHello gui) {
@@ -416,7 +425,7 @@ public boolean isStarted() {return started;}
 	public  Demineur(String name,Level lv)//Constructeur surcharg�
 	{
 		
-		super("D�mineur ISMIN");
+		super("Démineur ISMIN Game");
 		lev=lv;
 		setRandomColor();
 

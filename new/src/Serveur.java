@@ -210,6 +210,49 @@ public void run(){
 			//TODO end serveur et end game
 		}
 		
+		if(cmd==10)
+		{
+			System.out.println("Got inside the cmd==10");
+			 boolean lostPlayer=dis.readBoolean();
+			 String playerWhoLost=dis.readUTF();
+			 int time=dis.readInt();
+
+			 int score=dis.readInt();
+			 int colorClient=dis.readInt();
+			 String message;
+			 // TODO: Ajouter son score dans le fichier
+			 if(lostPlayer)//Si le joueur a perdu
+			{
+				
+				 message="The player "+playerWhoLost+" has lost the game!\n";
+			}
+
+			else //Si le jouer s'est déconnecté 
+				
+				 message="The player "+playerWhoLost+" has quit the game!\n";
+
+
+				nombreClients--;
+
+				if(nombreClients==0){
+
+					//TODO Afficher le score
+				}
+
+				for(int client=0;client<this.listSocket.size();client++) {//Diffuser aux autre clients
+					
+					
+					DataOutputStream dos1 = new DataOutputStream(listSocket.get(client).getOutputStream());
+					dos1.writeInt(0);
+					dos1.writeInt(colorClient);
+					dos1.writeUTF(message);
+					
+					
+				}
+
+			 
+
+		}
     	
     
     
