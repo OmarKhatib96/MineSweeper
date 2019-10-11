@@ -1,5 +1,5 @@
-
-
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.awt.GridLayout;
 import java.awt.event.* ;
 import java.io.DataInputStream;
@@ -30,7 +30,7 @@ public class Demineur extends JFrame implements Runnable {
 	private static Level lev;
 	public static final int PORT=1000;
 	public static final String HOSTNAME="localhost";
-	public static  String PSEUDO="Omar";
+	public static String PSEUDO="Omar";
     public static final  int  MSG=0;
     public static final  int  POS=1;
 	public static final  int  START=2;
@@ -40,6 +40,7 @@ public class Demineur extends JFrame implements Runnable {
     public static final int IDLE=4;
     public static final int GETPSEUDO=5;
 
+	private boolean champRecu=false;
     private Color color;
     private int numeroClient=0;
     private User client;
@@ -47,27 +48,31 @@ public class Demineur extends JFrame implements Runnable {
     private boolean connected=false;
     public static int increment=0;
     private static String text;
-    //private boolean ButtonSent=false;
-	private JTextField inputTextField;//For each client
-	
+	private JTextField inputTextField;//For each client	
 	private Chat chat;
-
-    //private static Champ champ=	new Champ("Mineur game", new Level(lvl.EASY));
     private static Champ champ;
     private boolean solo=false;
 	private static int nbr_cases_decouvertes=0;
 	private boolean started=false;
 	private static IHMHello gui;
 	private boolean lost=false;
-	//JTextArea msgArea=new  JTextArea(5,20);10/9/2019
-	private  Thread process;
-	
+	private  Thread process;	
 	private  DataInputStream in;
 	private DataOutputStream out;
 	Socket sock;
 	public int  Get_nbr_cases_decouvertes() {
 		return nbr_cases_decouvertes;
 			
+	}
+
+	public boolean getChampRecu(){
+
+		return champRecu;
+	}
+
+	private void Set_nbr_cases_decouvertes(){
+
+		nbr_cases_decouvertes=0;
 	}
 		
 	public JTextField getTextField() {
@@ -96,8 +101,11 @@ public class Demineur extends JFrame implements Runnable {
 		this.cmd=cmd;
 	}
 	
+	public boolean getConnected(){
+
+		return connected;
+	}
 	
-	//Boucle d'attente des �vts du serveur
 	public void run() {
 		
 		
@@ -136,9 +144,8 @@ public class Demineur extends JFrame implements Runnable {
                     int y=in.readInt();                  
 					String pseudoPlayer=in.readUTF();
 					int color=in.readInt();
-					//int numeroClient=in.readInt();
-					//int colorClient=in.readInt();
-					gui.SetJPanel( x,  y,new Color(color));
+					gui.SetJPanel(x,y,new Color(color));
+				
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -149,35 +156,27 @@ public class Demineur extends JFrame implements Runnable {
 			
 			if(cmd==Demineur.END) {
 				
-				/*String msg;
-				started=false;
-				quit();
-				closeSocket();
-				process=null;
-				//out.writeUTF(msg);
-				 * 
-				 */
+			
 				
 			}
 			
-		//	if(cmd==Demineur.LOST){
 
 
 
-		//	}
+	
 
 
 			if(cmd==Demineur.START) {
                 try{
 					//Level l=new Level(lvl.EASY);
-
+				
 				//champ=new Champ("Démineur",l);
 				this.gui.repaint();
 				this.gui.getCompteur().stopCpt();
 				this.setStarted(false);
 				this.setLost(false);
 				champ.resetTabMines();
-
+				Set_nbr_cases_decouvertes();
                 int tailleX=in.readInt();
                 int tailleY=in.readInt();
                 this.champ.InitialisationChamp(tailleX, tailleY, 0);
@@ -196,19 +195,15 @@ public class Demineur extends JFrame implements Runnable {
 						
 				gui.resetPanelMines();
 				gui.placeCases();
-				//pack();//10/10/201*
-			   //gui.placeCases();
 			    champ.affText();
-
-			//	gui.placeCases();
-             //   champ.affText();
+				champRecu=true;
+			
 
             } catch (IOException e) {
                 // TODO Auto-generated catch block
                 e.printStackTrace();
             }
 				gui.addMsg(getPseudo()+" "+ "Go!\n",this.color);
-				//started=true;
 				
 				
 			}
@@ -217,12 +212,7 @@ public class Demineur extends JFrame implements Runnable {
 		}
 		
 		}
-		
-	
-
-		
-		//En fct de ce que je lis: j'affiche les mines/numeros/fin de partie
-		
+				
 		
 		
 	
@@ -245,6 +235,11 @@ public void setDis( DataInputStream input) {
 	this.in=input;
 }
 
+public void setNumeroClient(int num)
+{
+numeroClient=num;
+
+}
 
 
 	public void sendMessage(String message) {
@@ -305,13 +300,13 @@ public void setDis( DataInputStream input) {
 	
 	
 	
-	public void closeSocket() {
+	public void disconnect() {
 		
 		try {
 			
 			sock.close();
 			connected=false;
-			
+			process=null;
 		}catch(IOException ex) {
 			
 			System.out.println("Cannot close the socket!");
@@ -333,11 +328,12 @@ public void setDis( DataInputStream input) {
 		process=new Thread(this);
 		process.start();
 		connected=true;
+		out.writeUTF(PseuField);
 		//chat=new Chat(this);
 
 		//Lecture du numéro client attribué par le serveur au client
 		//numeroClient=in.readInt();
-		//gui.addMsg("Mon numéro client est: "+numeroClient);
+		gui.addMsg("Mon numéro client est: "+numeroClient,color);
 		
 	}catch(UnknownHostException e) {
 		gui.addMsg("Connexion impossible avec : "+HostField+":"+PortField,this.color);
@@ -444,8 +440,11 @@ public boolean isStarted() {return started;}
             champ=new Champ(name,lv); 
 
 	    gui= new IHMHello(this) ;//Renommer IHMHello � GUi
-		setContentPane(gui) ;//mettre un panel au milieu		
-    	pack();
+		setContentPane(gui) ;//mettre un panel au milieu	
+		ImageIcon img=new ImageIcon("new/img/logo.jpg");
+		setIconImage(img.getImage());
+
+		pack();
 		setVisible(true) ;
 		process=new Thread(this);
 		process.start();

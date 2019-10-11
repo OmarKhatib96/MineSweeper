@@ -38,8 +38,9 @@ public class Serveur extends JFrame implements Runnable{
 	ArrayList<User> listClients=new ArrayList<User>();
 	public    Champ champ=new Champ("Mineur game", new Level(lvl.MEDIUM));
     
-    private int nombreClients=0;
-
+	private int nombreClients=0;
+	
+	private List<String> listPlayers=new ArrayList<String>();
 
 public  Champ getChamp(){
 
@@ -133,17 +134,22 @@ public void run(){
 	DataInputStream dis = new DataInputStream(socket.getInputStream());
 	DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
 	//Add to the collection
-	listIn.add(dis);
-	listOut.add(dos);
+	//listIn.add(dis);
+	//listOut.add(dos);
 	LocalDateTime now = LocalDateTime.now(); 
     Date date = new Date();  
 	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
 	String welcomeMessage=dis.readUTF()+" has just joined the game";//From the IHM
 	//Add to the GUI Server that the player x has joined the game
 	gui.addMsg(dtf.format(now)+" "+welcomeMessage+"\n");
-	//Envoie de son numero:
-	nombreClients++;
+	String pseudoClient =dis.readUTF();
+	listIn.add(nombreClients,dis);
+	listOut.add(nombreClients,dos);
 
+	//dos.writeInt(nombreClients);//Lui envoyer son numéro client
+	listPlayers.add(pseudoClient);
+	nombreClients++;
+	//dos.writeInt(nombreClients);
 	//dos.writeInt(nombreClients);
 
 
@@ -216,9 +222,9 @@ public void run(){
 			 boolean lostPlayer=dis.readBoolean();
 			 String playerWhoLost=dis.readUTF();
 			 int time=dis.readInt();
-
 			 int score=dis.readInt();
 			 int colorClient=dis.readInt();
+			 int numeroClient=dis.readInt();
 			 String message;
 			 // TODO: Ajouter son score dans le fichier
 			 if(lostPlayer)//Si le joueur a perdu
@@ -227,11 +233,13 @@ public void run(){
 				 message="The player "+playerWhoLost+" has lost the game!\n";
 			}
 
-			else //Si le jouer s'est déconnecté 
+			else {//Si le jouer s'est déconnecté 
 				
 				 message="The player "+playerWhoLost+" has quit the game!\n";
-
-
+				 listIn.remove(numeroClient);
+				 listOut.remove(numeroClient);
+				 this.listSocket.remove(numeroClient);
+		}
 				nombreClients--;
 
 				if(nombreClients==0){

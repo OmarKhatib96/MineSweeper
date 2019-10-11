@@ -38,6 +38,7 @@ public class IHMHello extends JPanel implements ActionListener {
 	private JTextField portField=new JTextField(String.valueOf(Demineur.PORT),6);
 	private JTextField pseudoField=new JTextField(Demineur.PSEUDO,15);
     //tPane = new JTextPane();                
+	JComboBox playMode ;
 
 	private JTextPane msgArea;
 	private JTextField inputTextField=new JTextField();
@@ -50,7 +51,6 @@ public class IHMHello extends JPanel implements ActionListener {
 	public void resetPanelMines(){
 
 		panelMines.removeAll();
-
 
 	}
 	private  Case [][] tabCases;
@@ -121,7 +121,7 @@ msgArea=new JTextPane();
 
 msgArea.setBorder(eb);
 //tPane.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
-msgArea.setMargin(new Insets(15, 15, 15, 15));
+msgArea.setMargin(new Insets(0, 15, 15, 15));
 //jsp.getViewport().add(msgArea);
 
 JScrollPane jsp = new JScrollPane(msgArea);
@@ -141,10 +141,14 @@ panelSouth.add(jsp);
 //Writing message area
 Box box = Box.createHorizontalBox();
 add(box, BorderLayout.SOUTH);
-
 box.add(inputTextField);
 box.add(sendButton);
 sendButton.addActionListener(this);
+sendButton.getActionForKeyStroke(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,ActionEvent.ACTION_PERFORMED));
+mQuit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q,ActionEvent.CTRL_MASK));
+Demin.getRootPane().setDefaultButton(sendButton);
+sendButton.setEnabled(false);
+
 
 
 //butquit
@@ -191,6 +195,8 @@ menuPartie.add(menuLevel);
 menuPartie.add(mQuit);
 
 }
+
+
  
  public Compteur getCompteur() {
 	return compteur;
@@ -204,19 +210,49 @@ public void addMsg(String str,Color c) {
 	//msgArea.replaceSelection(str);	
 	    StyleContext sc = StyleContext.getDefaultStyleContext();
         AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
-        aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Lucida Console");
-        aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
+		aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Lucida Console");
+		aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
+		//aset=sc.addAttribute(aset,StyleConstants.setBold(aset,true));
         int len = msgArea.getDocument().getLength();
         msgArea.setCaretPosition(len);
         msgArea.setCharacterAttributes(aset, false);
         msgArea.replaceSelection(str);
 }
 
+
+
+public void keyPressed(KeyEvent e) {
+    if (e.getKeyCode()==KeyEvent.VK_ENTER){
+        String x = inputTextField.getText();
+			if(!x.isEmpty()) {
+				
+			    try {
+			    
+			    	DataOutputStream out = new DataOutputStream(Demin.getSocket().getOutputStream());
+					out.writeInt(0);//Pr�venir le serveur qu'on va envoyer un message
+					out.writeInt(Demin.getColorInt());//Envoi de la couleur aussi
+				    out.writeUTF(Demin.getPseudo()+": "+x);
+				    inputTextField.setText("");//Reset the field
+				     
+				
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				}
+			   
+				
+			}
+		}	 
+	 
+ }
+    
+
+
+
 public void actionPerformed(ActionEvent e) {
 	if(e.getSource()==butQuit  || e.getSource()==mQuit) 
 	{
 	
-		int reponse=JOptionPane.showConfirmDialog(null, "�tes-vous s�rs?","Bye-Bye",JOptionPane.YES_NO_OPTION,JOptionPane.ERROR_MESSAGE);
+		int reponse=JOptionPane.showConfirmDialog(null, "Etes-vous sûrs?","Bye-Bye",JOptionPane.YES_NO_OPTION,JOptionPane.ERROR_MESSAGE);
 		if( reponse==JOptionPane.YES_OPTION)//Si l'utilisteur a appuy� sur oui
 		 
 			System.exit(0);
@@ -224,11 +260,7 @@ public void actionPerformed(ActionEvent e) {
 			
 			Demin.getChamp().placeMines();
 			newPartie();
-			
-			//Demin.getGui().getCompteur().startCpt();
 
-			
-			
 		}else if(e.getSource()==mEasy) {
 			Level l=new Level(lvl.EASY);
 			Demin.getChamp().newPartie(l);
@@ -270,11 +302,18 @@ public void actionPerformed(ActionEvent e) {
 		 
 			//Add pop up window box;
 			DataOutputStream out;
-			
+			DataInputStream in;
+
 			Demin.Connect2Server(hostField.getText(),Integer.parseInt(portField.getText()),Demin.getPseudo());
 			try {
 				out = new DataOutputStream(Demin.getSocket().getOutputStream());
-			     out.writeUTF(Demin.getPseudo());
+				 out.writeUTF(Demin.getPseudo());
+				 in = new DataInputStream(Demin.getSocket().getInputStream());
+				 sendButton.setEnabled(true);//Activer le chat
+
+				// int num=in.readInt();
+				// Demin.setNumeroClient(num);
+				// System.out.println("Mon numéro est:"+num);
 
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
@@ -321,11 +360,29 @@ public void actionPerformed(ActionEvent e) {
 
  
  private void newPartie(Level l) {
+		 
+	if(Demin.getConnected()){
+			DataOutputStream out= new DataOutputStream (Demin.getDos());
+			try {
+				out.writeInt(10);
+				out.writeBoolean(false);
+				out.writeUTF(Demin.getPseudo());
+				out.writeInt(this.Demin.getGui().getCompteur().GetCounter());
+				out.writeInt(this.Demin.Get_nbr_cases_decouvertes());
+				out.writeInt(this.Demin.getColorInt());
+			} catch (IOException e1) {
+				// TODO Auto-generated catch block
+				e1.printStackTrace();
+			}
+
+				Demin.disconnect();
+				connexionBut.setEnabled(true);//Reactiver le bouton connect 
+		}	
 		resetPanelMines();
 	 	placeCases();
 	 	Demin.pack();
 	    Demin.getGui().getCompteur().stopCpt();
-	    Demin.newPartie();
+		Demin.newPartie();
 		
  }
  

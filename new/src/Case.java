@@ -118,6 +118,7 @@ class Case extends JPanel implements MouseListener{
 		if(!clicked && !demin.getLost()) {
 		demin.set_nbr_cases_decouvertes(demin.Get_nbr_cases_decouvertes()+1);//incrementation du nombre de cases d�couverte
 		clicked=true;
+		if(demin.getConnected() && demin.getChampRecu())
 		try {
 			demin.getDos().writeInt(1);
 			demin.getDos().writeInt(x);
@@ -145,20 +146,23 @@ class Case extends JPanel implements MouseListener{
 				}
 				
 		if(demin.getChamp().Ismin(x, y)) {
-			
+			if(demin.getConnected() && demin.getChampRecu()){
+
 			DataOutputStream out= new DataOutputStream (demin.getDos());
 				try {
 					out.writeInt(10);
 					out.writeBoolean(true);
-
 					out.writeUTF(demin.getPseudo());
 					out.writeInt(this.demin.getGui().getCompteur().GetCounter());
 					out.writeInt(this.demin.Get_nbr_cases_decouvertes());
 					out.writeInt(this.demin.getColorInt());
+					out.writeInt(this.demin.getNumeroClient());
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+
+			}
 			JOptionPane.showMessageDialog(null, "You lost !!! Your score is "+String.valueOf(demin.Get_nbr_cases_decouvertes())+" boxes found with Time: "+String.valueOf(demin.getGui().getCompteur().GetCounter())+" seconds");
 
 			demin.setLost(true);
