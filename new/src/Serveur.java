@@ -31,6 +31,9 @@ public class Serveur extends JFrame implements Runnable{
     private List<DataInputStream> listIn = new ArrayList<DataInputStream>();
     private  List<DataOutputStream> listOut = new ArrayList<DataOutputStream>();
 	
+	private HashMap<String,DataInputStream> hmClientIn=new  HashMap<String,DataInputStream>();
+	private HashMap<String,DataOutputStream> hmClientOut=new  HashMap<String,DataOutputStream>();
+	private HashMap<String,Socket> hmClientSocket=new HashMap<String,Socket>();
 	ServerSocket serversocket ;
 	private GuiServeur gui;
 	List<Socket> listSocket = new ArrayList<Socket>();
@@ -134,8 +137,8 @@ public void run(){
 	DataInputStream dis = new DataInputStream(socket.getInputStream());
 	DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
 	//Add to the collection
-	//listIn.add(dis);
-	//listOut.add(dos);
+	listIn.add(dis);
+	listOut.add(dos);
 	LocalDateTime now = LocalDateTime.now(); 
     Date date = new Date();  
 	DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss");  
@@ -143,13 +146,17 @@ public void run(){
 	//Add to the GUI Server that the player x has joined the game
 	gui.addMsg(dtf.format(now)+" "+welcomeMessage+"\n");
 	String pseudoClient =dis.readUTF();
-	listIn.add(nombreClients,dis);
-	listOut.add(nombreClients,dos);
+	hmClientIn.put(pseudoClient, dis);
+	hmClientOut.put(pseudoClient, dos);
+	hmClientSocket.put(pseudoClient, socket);
+
+	//listIn.add(nombreClients,dis);
+	//listOut.add(nombreClients,dos);
 
 	//dos.writeInt(nombreClients);//Lui envoyer son numéro client
 	listPlayers.add(pseudoClient);
 	nombreClients++;
-	//dos.writeInt(nombreClients);
+	System.out.println("Numéro" +nombreClients);
 	//dos.writeInt(nombreClients);
 
 
@@ -224,7 +231,7 @@ public void run(){
 			 int time=dis.readInt();
 			 int score=dis.readInt();
 			 int colorClient=dis.readInt();
-			 int numeroClient=dis.readInt();
+			 //int numeroClient=dis.readInt();
 			 String message;
 			 // TODO: Ajouter son score dans le fichier
 			 if(lostPlayer)//Si le joueur a perdu
@@ -236,9 +243,13 @@ public void run(){
 			else {//Si le jouer s'est déconnecté 
 				
 				 message="The player "+playerWhoLost+" has quit the game!\n";
-				 listIn.remove(numeroClient);
-				 listOut.remove(numeroClient);
-				 this.listSocket.remove(numeroClient);
+				 DataInputStream inPlayerToRemove=hmClientIn.get(playerWhoLost);
+				 DataOutputStream outPlayerToRemove=hmClientOut.get(playerWhoLost);
+				 listIn.remove(inPlayerToRemove);
+				 listOut.remove(outPlayerToRemove);
+				 listSocket.remove(hmClientSocket.get(playerWhoLost));
+				System.out.println("Removal done!\n");
+				 //this.listSocket.remove(numeroClient);
 		}
 				nombreClients--;
 

@@ -156,7 +156,6 @@ class Case extends JPanel implements MouseListener{
 					out.writeInt(this.demin.getGui().getCompteur().GetCounter());
 					out.writeInt(this.demin.Get_nbr_cases_decouvertes());
 					out.writeInt(this.demin.getColorInt());
-					out.writeInt(this.demin.getNumeroClient());
 				} catch (IOException e1) {
 					// TODO Auto-generated catch block
 					e1.printStackTrace();

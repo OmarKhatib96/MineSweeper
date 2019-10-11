@@ -310,7 +310,6 @@ public void actionPerformed(ActionEvent e) {
 				 out.writeUTF(Demin.getPseudo());
 				 in = new DataInputStream(Demin.getSocket().getInputStream());
 				 sendButton.setEnabled(true);//Activer le chat
-
 				// int num=in.readInt();
 				// Demin.setNumeroClient(num);
 				// System.out.println("Mon numéro est:"+num);
