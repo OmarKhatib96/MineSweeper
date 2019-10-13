@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import java.awt.*;  
 
 
 
@@ -20,7 +21,8 @@ public class GuiServeur extends JPanel implements ActionListener {
 	private JButton startBut=new JButton("Start Partie");
 	private Serveur serveur;
 	private JTextArea msgAreas=new JTextArea(20,20);
-	
+	private Choice c; 
+
 	
 	public Serveur getServeur()
 	{
@@ -35,6 +37,13 @@ public class GuiServeur extends JPanel implements ActionListener {
 		add(msgAreas,BorderLayout.CENTER);
 		add(startBut,BorderLayout.SOUTH);
 		startBut.addActionListener(this);
+		 c=new Choice();  
+		c.setBounds(100,100, 75,75);  
+        c.add("EASY");  
+        c.add("MEDIUM");  
+        c.add("HARD");  
+    
+		add(c,BorderLayout.NORTH);
 
 		
 	}
@@ -57,6 +66,18 @@ public class GuiServeur extends JPanel implements ActionListener {
 		
 		if(e.getSource()==startBut ) 
 		{
+			String choice=c.getItem(c.getSelectedIndex());
+			if(choice.equals("EASY"))
+				serveur.setChamp(new Champ("Mineur game", new Level(lvl.EASY)));
+
+			if(choice.equals("MEDIUM"))
+				serveur.setChamp(new Champ("Mineur game", new Level(lvl.MEDIUM)));
+
+
+			if(choice.equals("HARD"))
+				serveur.setChamp(new Champ("Mineur game", new Level(lvl.HARD)));
+
+
 			int sizeX=serveur.getChamp().getDimensionX();
 			System.out.println("(serv x="+sizeX);
 			int sizeY=serveur.getChamp().getDimensionY();

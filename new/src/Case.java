@@ -20,9 +20,7 @@ class Case extends JPanel implements MouseListener{
 	private Demineur demin;
 	private boolean clicked=false;//10/07/2019
 	
-	private Color couleurFOnd=new Color(200,200,200);
 	private Color couleurBord=new Color(60,60,100);
-	private Color overBorderColor = new Color(188, 188, 228);
 
 	public Case (int x, int y,Demineur Demin) {//passer position
 		this.x=x;
@@ -123,7 +121,6 @@ class Case extends JPanel implements MouseListener{
 			demin.getDos().writeInt(demin.getColorInt());
 		
 		} catch (IOException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		//repaint();
@@ -151,7 +148,6 @@ class Case extends JPanel implements MouseListener{
 					out.writeInt(this.demin.Get_nbr_cases_decouvertes());
 					out.writeInt(this.demin.getColorInt());
 				} catch (IOException e1) {
-					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
 				 demin.addScorehmOnline(this.demin.getChamp().getNiveau(),this.demin.Get_nbr_cases_decouvertes());
@@ -161,7 +157,7 @@ class Case extends JPanel implements MouseListener{
 			
 				 }
 			
-			JOptionPane.showMessageDialog(null, "You lost !!! Your score is "+String.valueOf(demin.Get_nbr_cases_decouvertes())+" boxes found with Time: "+String.valueOf(demin.getGui().getCompteur().GetCounter())+" seconds");
+			JOptionPane.showMessageDialog(null, "You lost! Your score is "+String.valueOf(demin.Get_nbr_cases_decouvertes())+" boxes found with Time: "+String.valueOf(demin.getGui().getCompteur().GetCounter())+" seconds");
 
 			demin.setLost(true);
 			if(!demin.getConnected()){
@@ -180,7 +176,7 @@ class Case extends JPanel implements MouseListener{
 		repaint();
 	}
 		if(demin.isWin()) {
-			JOptionPane.showMessageDialog(null, "You win!!! your score is "+String.valueOf(demin.Get_nbr_cases_decouvertes())+" Time: "+String.valueOf(demin.getGui().getCompteur().GetCounter())+" seconds");
+			JOptionPane.showMessageDialog(null, "You win! your score is "+String.valueOf(demin.Get_nbr_cases_decouvertes())+" Time: "+String.valueOf(demin.getGui().getCompteur().GetCounter())+" seconds");
 			
 		}
 }

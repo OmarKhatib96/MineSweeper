@@ -47,13 +47,10 @@ public class Demineur extends JFrame implements Runnable {
 	private boolean champRecu = false;
 	private Color color;
 	private int numeroClient = 0;
-	private User client;
 	private int cmd;
 	private boolean connected = false;
 	public static int increment = 0;
-	private static String text;
 	private JTextField inputTextField;// For each client
-	private Chat chat;
 	private static Champ champ;
 	private boolean solo = false;
 	private static int nbr_cases_decouvertes = 0;
@@ -100,7 +97,7 @@ public class Demineur extends JFrame implements Runnable {
 
 	public void setPseudo(String nickname) {
 
-		this.PSEUDO = nickname;
+		PSEUDO = nickname;
 	}
 
 	public void setCmd(int cmd) {
@@ -129,7 +126,6 @@ public class Demineur extends JFrame implements Runnable {
 					msg = in.readUTF();
 
 					gui.addMsg(msg, new Color(couleurClient));
-					System.out.println("Got inside the lost function");
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
@@ -175,8 +171,8 @@ public class Demineur extends JFrame implements Runnable {
 				try {
 					// Level l=new Level(lvl.EASY);
 
-					this.gui.repaint();
-					this.gui.getCompteur().stopCpt();
+					gui.repaint();
+					gui.getCompteur().stopCpt();
 					this.setStarted(false);
 					this.setLost(false);
 					champ.resetTabMines();
@@ -187,7 +183,7 @@ public class Demineur extends JFrame implements Runnable {
 					System.out.println("From demineur lvl= "+niveauServeur);
 					champ.InitialisationChamp(tailleX, tailleY, 0);
 
-					if(niveauServeur.equals("EASY"))
+					if(niveauServeur.equals("EASY"));
 						champ.setNiveau(lvl.EASY);
 					if(niveauServeur.equals("MEDIUM"))	{		
 						champ.setNiveau((lvl.MEDIUM));
@@ -219,7 +215,7 @@ public class Demineur extends JFrame implements Runnable {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				gui.addMsg(getPseudo() + " " + "Go!\n", this.color);
+				gui.addMsg("\n"+getPseudo() + " " + "Go!\n", this.color);
 
 			}
 
@@ -300,14 +296,12 @@ public class Demineur extends JFrame implements Runnable {
 			sock = new Socket(HostField, PortField);
 			in = new DataInputStream(sock.getInputStream());
 			out = new DataOutputStream(sock.getOutputStream());
-			gui.addMsg(" Connexion réussie avec : " + HostField + ":" + PortField + "\n", this.color);
+			gui.addMsg("Connexion réussie avec : " + HostField + ":" + PortField + "\n", this.color);
 			cmd = IDLE;
 			process = new Thread(this);
 			process.start();
 			connected = true;
 			out.writeUTF(PseuField);
-			gui.addMsg("Mon numéro client est: " + numeroClient, color);
-
 		} catch (UnknownHostException e) {
 			gui.addMsg("Connexion impossible avec : " + HostField + ":" + PortField, this.color);
 			e.printStackTrace();
@@ -348,15 +342,13 @@ public class Demineur extends JFrame implements Runnable {
 		if (connected) {// Si on n'est en mode multijoueur
 			for (lvl niveau : lvl.values()) { //Pour créer les fichiers s'ils n'existent pas
 		
-		//	for (int i = 0; i < lvl.values().length; i++) {
-				// Créer un fichier pour chaque niveau de difficulté?
+		
 				String FILENAME ="ScoreOnline" + niveau.name() + ".txt";
 				Path path = Paths.get(FILENAME);
 				if (!Files.exists(path)) {// si le fichier n'existe pas
 					try {
 						FileOutputStream fos = new FileOutputStream(FILENAME);
 					} catch (FileNotFoundException e) {
-						// TODO Auto-generated catch block
 						e.printStackTrace();
 					}
 
@@ -364,7 +356,6 @@ public class Demineur extends JFrame implements Runnable {
 
 				}
 
-				
 						hmScoresOnline.forEach((key,value) -> {
 
 							try 
@@ -374,7 +365,6 @@ public class Demineur extends JFrame implements Runnable {
 								writer.close();
 
 							} catch (IOException e) {
-								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
 						});
@@ -385,14 +375,12 @@ public class Demineur extends JFrame implements Runnable {
 				
 			
 
-			//TODO: remplir ave les scores en ligne
 	
 
 			else
 			 {for (lvl niveau : lvl.values()) { 
 		
-				//	for (int i = 0; i < lvl.values().length; i++) {
-						// Créer un fichier pour chaque niveau de difficulté?
+				
 						String FILENAME ="ScoreOffline" + niveau.name() + ".txt";
 						Path path = Paths.get(FILENAME);
 						if (!Files.exists(path)) {// si le fichier n'existe pas
@@ -400,7 +388,6 @@ public class Demineur extends JFrame implements Runnable {
 
 								FileOutputStream fos = new FileOutputStream(FILENAME);
 							} catch (FileNotFoundException e) {
-								// TODO Auto-generated catch block
 								e.printStackTrace();
 							}
 		

@@ -24,13 +24,10 @@ import java.awt.GridBagLayout;
 
 
 
-public class Serveur extends JFrame implements Runnable{
-	
+public class Serveur extends JFrame implements Runnable{	
 	private boolean [][] caseDiscovered;
-
     private List<DataInputStream> listIn = new ArrayList<DataInputStream>();
     private  List<DataOutputStream> listOut = new ArrayList<DataOutputStream>();
-	
 	private HashMap<String,DataInputStream> hmClientIn=new  HashMap<String,DataInputStream>();
 	private HashMap<String,DataOutputStream> hmClientOut=new  HashMap<String,DataOutputStream>();
 	private HashMap<String,Socket> hmClientSocket=new HashMap<String,Socket>();
@@ -38,10 +35,8 @@ public class Serveur extends JFrame implements Runnable{
 	private GuiServeur gui;
 	List<Socket> listSocket = new ArrayList<Socket>();
 	ArrayList<User> listClients=new ArrayList<User>();
-	public    Champ champ=new Champ("Mineur game", new Level(lvl.MEDIUM));
-    
-	private int nombreClients=0;
-	
+	public    Champ champ=new Champ("Mineur game", new Level(lvl.MEDIUM));//Champ par défaut  
+	private int nombreClients=0;	
 	private List<String> listPlayers=new ArrayList<String>();
 
 public  Champ getChamp(){
@@ -49,10 +44,17 @@ public  Champ getChamp(){
     return champ;
 }
 
+public void setChamp(Champ newChamp){
+	champ=newChamp;
+
+}
 
 	Serveur(){
+		super("Démineur ISMIN Game server");
 		System.out.println("Démarrage serveur");
-		 gui=new GuiServeur(this);
+		gui=new GuiServeur(this);
+		ImageIcon img=new ImageIcon("new/img/serverLogo.jpg");
+		setIconImage(img.getImage());
 		setContentPane(gui);
 		pack();//Redimentionner la frame
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -66,6 +68,7 @@ public  Champ getChamp(){
 	}
 
 	public void resetCaseDiscovered(){
+		caseDiscovered=new boolean[champ.getDimensionX()][champ.getDimensionY()];
 		for(int i=0;i<champ.getDimensionX();i++)
 		for(int j=0;j<champ.getDimensionY();j++)
 			caseDiscovered[i][j]=false;
@@ -107,7 +110,7 @@ public  ArrayList<User> listClients(){
 public void startServer() {
 	
 	try {
-	gui.addMsg("Attente des clients");
+	gui.addMsg("Attente des clients...\n");
 	serversocket=new  ServerSocket(Demineur.PORT);
 	new Thread(this).start();
 
@@ -130,7 +133,6 @@ public void run(){
 	Thread t =new Thread(this);
 	t.start();//Dans un thread à part 
 	this.listSocket.add(socket);//add the new incoming client
-	gui.addMsg(" Nouveau client\n");
 	DataInputStream dis = new DataInputStream(socket.getInputStream());
 	DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
 	//Add to the collection
@@ -215,7 +217,6 @@ public void run(){
 		
 		if(cmd==10)
 		{
-			System.out.println("Got inside the cmd==10");
 			 boolean lostPlayer=dis.readBoolean();
 			 String playerWhoLost=dis.readUTF();
 			 int time=dis.readInt();
@@ -226,14 +227,14 @@ public void run(){
 			 if(lostPlayer)//Si le joueur a perdu
 			{
 				
-				 message="The player "+playerWhoLost+" has lost the game!\n";
+				 message="\nThe player "+playerWhoLost+" has lost the game!\n";
 				 nombreClients--;
 
 			}
 
 			else {//Si le jouer s'est déconnecté 
 				
-				 message="The player "+playerWhoLost+" has quit the game!\n";
+				 message="\nThe player "+playerWhoLost+" has quit the game!\n";
 				 DataInputStream inPlayerToRemove=hmClientIn.get(playerWhoLost);
 				 DataOutputStream outPlayerToRemove=hmClientOut.get(playerWhoLost);
 				 listIn.remove(inPlayerToRemove);
@@ -250,7 +251,6 @@ public void run(){
 					DataOutputStream dos1 = new DataOutputStream(listSocket.get(client).getOutputStream());
 					dos1.writeInt(3);
 					dos1.writeInt(colorClient);
-					//dos1.writeUTF("Partie terminée!");
 					
 					
 				}

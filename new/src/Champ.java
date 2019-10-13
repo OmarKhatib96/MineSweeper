@@ -9,21 +9,14 @@ public class Champ {
 	private final static int DIMHARD=2;
 	private final static int NBMINESEASY=8;
 	private final static int NBMINESMEDIUM=40;
-	private final static int NBMINESHARD=80;
-
-
-				
-	
-	
-	
+	private final static int NBMINESHARD=80	;	
 	private final String NomParDefaut="GAME";
-	 private String name;
+	private String name;
 	private static  boolean[][] tabMines;//Tableau repr�sentatif du champs		
 	static Random alea=new Random();
 	private static  int dimX;
 	private static int dimY;
 	private static  int nbmines=NBMINES;
-	
 	private lvl niveau;
 	
 		
@@ -39,12 +32,7 @@ public class Champ {
 	
 
 	public void resetTabMines(){
-		/*
-		for (int i=0;i<getDimensionX();i++)
-			for (int j=0;j<getDimensionY();j++)
-				tabMines[i][j]=false;
-
-*/
+	
 		tabMines=new boolean [dimX][dimY];
 
 
@@ -185,7 +173,6 @@ public class Champ {
 	 
 	 public  void newPartie(Level lev) {
 		 
-		 	//this.name=name;
 			if (lev.getLevel()==lvl.EASY) {
 				nbmines=NBMINESEASY;
 				InitialisationChamp(5,4,nbmines);

@@ -37,7 +37,6 @@ public class IHMHello extends JPanel implements ActionListener {
 	private JTextField hostField=new JTextField(Demineur.HOSTNAME,20);
 	private JTextField portField=new JTextField(String.valueOf(Demineur.PORT),6);
 	private JTextField pseudoField=new JTextField(Demineur.PSEUDO,15);
-	JComboBox playMode ;
 	private JTextPane msgArea;
 	private JTextField inputTextField=new JTextField();
 
@@ -66,7 +65,7 @@ public class IHMHello extends JPanel implements ActionListener {
 setBackground(Color.black);
 
 //ImageIcon quitIcon = new ImageIcon("sortieCLR.gif"); // image
-JLabel title = new JLabel("Welcome on board");
+JLabel title = new JLabel("Welcome on board "+Demin.getPseudo());
 title.setForeground(Color.DARK_GRAY);
 title.setFont(new Font("TimesRoman", Font.BOLD,18));
 Color titleColor=new Color(123,123,123);
@@ -83,14 +82,12 @@ compteur.setBorder(BorderFactory.createLineBorder(titleColor));
 panelnorth.add(title,BorderLayout.NORTH);
 panelnorth.add(compteur,BorderLayout.CENTER);
 panelSouth= new JPanel(new BorderLayout());
-
 panelConnexion.add(new JLabel("Serveur"));
 hostField=new JTextField("localhost");
 panelConnexion.add(hostField);
 panelConnexion.add(pseudoField);
 panelConnexion.add(portField);
 panelConnexion.add(connexionBut);
-
 Color couleurConnexion=new Color(Demin.getColorInt());
 panelConnexion.setBackground(couleurConnexion);
 panelConnexion.setBorder(BorderFactory.createLineBorder(titleColor));
@@ -270,7 +267,6 @@ public void actionPerformed(ActionEvent e) {
 				
 
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 
@@ -325,7 +321,6 @@ public void actionPerformed(ActionEvent e) {
 				out.writeInt(this.Demin.Get_nbr_cases_decouvertes());
 				out.writeInt(this.Demin.getColorInt());
 			} catch (IOException e1) {
-				// TODO Auto-generated catch block
 				e1.printStackTrace();
 			}
 

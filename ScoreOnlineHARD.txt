@@ -1,0 +1,10 @@
+Omar  1
+Yassine  1
+Khatib  2
+Omar  1
+Khatib  2
+Yassine  1
+Omar  1
+Yassine  1
+Khatib  2
+Omar  1
