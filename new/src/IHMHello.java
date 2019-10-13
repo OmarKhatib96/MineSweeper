@@ -37,12 +37,9 @@ public class IHMHello extends JPanel implements ActionListener {
 	private JTextField hostField=new JTextField(Demineur.HOSTNAME,20);
 	private JTextField portField=new JTextField(String.valueOf(Demineur.PORT),6);
 	private JTextField pseudoField=new JTextField(Demineur.PSEUDO,15);
-    //tPane = new JTextPane();                
 	JComboBox playMode ;
-
 	private JTextPane msgArea;
 	private JTextField inputTextField=new JTextField();
-	//msgArea=new  JTextArea(10,20);
 
 	private JButton connexionBut=new JButton("Connect");
 	
@@ -74,18 +71,11 @@ title.setForeground(Color.DARK_GRAY);
 title.setFont(new Font("TimesRoman", Font.BOLD,18));
 Color titleColor=new Color(123,123,123);
 title.setBackground(titleColor);
-
 setLayout(new BorderLayout());
 title.setHorizontalTextPosition(JLabel.NORTH_EAST);
-//Case case_demineur=new Case();
 title.setBorder(BorderFactory.createLineBorder(titleColor));
-//case_demineur.paintComponent(gc);
-this.Demin=Demin;
-//placeCases();
-			
+this.Demin=Demin;			
 JPanel panelnorth=new JPanel(new BorderLayout());
-
-//panelnorth.set
 add(panelMines,BorderLayout.CENTER);
 compteur=new Compteur();
 compteur.setBackground(titleColor);
@@ -104,41 +94,20 @@ panelConnexion.add(connexionBut);
 Color couleurConnexion=new Color(Demin.getColorInt());
 panelConnexion.setBackground(couleurConnexion);
 panelConnexion.setBorder(BorderFactory.createLineBorder(titleColor));
-
 connexionBut.addActionListener(this);
 panelnorth.add(panelConnexion,BorderLayout.SOUTH);
-
 add(panelnorth,BorderLayout.NORTH);
 panelnorth.setBackground(couleurConnexion);
-
 EmptyBorder eb = new EmptyBorder(new Insets(12, 12, 12, 12));
-
-//tPane = new JTextPane();                
-
-//text area
-//msgArea=new  JTextArea(5,20);
 msgArea=new JTextPane();
-
 msgArea.setBorder(eb);
-//tPane.setBorder(BorderFactory.createLineBorder(Color.DARK_GRAY));
 msgArea.setMargin(new Insets(0, 15, 15, 15));
-//jsp.getViewport().add(msgArea);
-
 JScrollPane jsp = new JScrollPane(msgArea);
-
 jsp.setVerticalScrollBarPolicy(JScrollPane.VERTICAL_SCROLLBAR_ALWAYS);
-
 jsp.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
-
 jsp.getViewport().add(msgArea);
-
-
 panelSouth.add(msgArea,BorderLayout.NORTH);
 panelSouth.add(jsp);
-//this.add(jsp);
-//panelSouth.add(jsp);
-
-//Writing message area
 Box box = Box.createHorizontalBox();
 add(box, BorderLayout.SOUTH);
 box.add(inputTextField);
@@ -148,25 +117,15 @@ sendButton.getActionForKeyStroke(KeyStroke.getKeyStroke(KeyEvent.VK_ENTER,Action
 mQuit.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q,ActionEvent.CTRL_MASK));
 Demin.getRootPane().setDefaultButton(sendButton);
 sendButton.setEnabled(false);
-
-
-
-//butquit
-
 butQuit.setForeground(Color.DARK_GRAY);
 butQuit.setFont(new Font("Papyrus", Font.PLAIN,18));
 butQuit.addActionListener(this);
 panelSouth.add(box,BorderLayout.SOUTH);
-
-
-
 add(panelSouth,BorderLayout.SOUTH);
 JMenuBar menuBar=new JMenuBar();
-//Le menu Partie
 JMenu menuPartie=new JMenu("Partie");
 menuBar.add(menuPartie);
 JMenuItem mAide=new JMenuItem("Aide",KeyEvent.VK_Q);
-//menuPartie.add(mQuit);
 menuBar.add(Box.createGlue());//To add between the 2 adds
 mQuit.addActionListener(this);
 mNew.addActionListener(this);
@@ -207,12 +166,10 @@ public void setCompteur(Compteur compteur) {
 }
 
 public void addMsg(String str,Color c) {
-	//msgArea.replaceSelection(str);	
 	    StyleContext sc = StyleContext.getDefaultStyleContext();
         AttributeSet aset = sc.addAttribute(SimpleAttributeSet.EMPTY, StyleConstants.Foreground, c);
 		aset = sc.addAttribute(aset, StyleConstants.FontFamily, "Lucida Console");
 		aset = sc.addAttribute(aset, StyleConstants.Alignment, StyleConstants.ALIGN_JUSTIFIED);
-		//aset=sc.addAttribute(aset,StyleConstants.setBold(aset,true));
         int len = msgArea.getDocument().getLength();
         msgArea.setCaretPosition(len);
         msgArea.setCharacterAttributes(aset, false);
@@ -310,9 +267,7 @@ public void actionPerformed(ActionEvent e) {
 				 out.writeUTF(Demin.getPseudo());
 				 in = new DataInputStream(Demin.getSocket().getInputStream());
 				 sendButton.setEnabled(true);//Activer le chat
-				// int num=in.readInt();
-				// Demin.setNumeroClient(num);
-				// System.out.println("Mon numéro est:"+num);
+				
 
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block

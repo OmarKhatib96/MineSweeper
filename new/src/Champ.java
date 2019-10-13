@@ -19,13 +19,12 @@ public class Champ {
 	private final String NomParDefaut="GAME";
 	 private String name;
 	private static  boolean[][] tabMines;//Tableau repr�sentatif du champs		
-	//private static final  int seed=new Random().nextInt();
 	static Random alea=new Random();
 	private static  int dimX;
 	private static int dimY;
 	private static  int nbmines=NBMINES;
 	
-					
+	private lvl niveau;
 	
 		
 	public    void InitialisationChamp(int dimensionX,int dimensionY, int nbrmines)
@@ -50,11 +49,10 @@ public class Champ {
 
 
 	}
+
 	public void setTabMines(boolean mine,int i,int j){
 
-		//tabMines.clone(tabM);
 		tabMines[i][j]=mine;
-	//	tabMines.clone()=tabM;
 
 	}
 	
@@ -74,15 +72,14 @@ public class Champ {
 	{
 		this.name=name;
 		newPartie(lev);
-		/*this.name=name;
-		if (lev.getLevel()==lvl.EASY)
-			InitialisationChamp(10,10,5);
-		else if(lev.getLevel()==lvl.MEDIUM)
-			InitialisationChamp(20,20,6);	
-		else if(lev.getLevel()==lvl.HARD)
-			InitialisationChamp(40,40,26);
-		*/
+		niveau=lev.getLevel();
+	
 		
+	}
+
+
+	public lvl getNiveau(){
+		return niveau;
 	}
 	public boolean [][]getTab() {
 		
@@ -205,11 +202,15 @@ public class Champ {
 				InitialisationChamp(15,15,nbmines);
 
 			}
-		 
+			niveau=lev.getLevel();
 			this.affText();
 		 
 	 }
 	 
+
+	 public void setNiveau(lvl l){
+		 niveau=l;
+	 }
 	 public void newPartie() {
 		 
 		 

@@ -39,7 +39,6 @@ class Case extends JPanel implements MouseListener{
 
 	public void paintComponent(Graphics gc) {
 		super.paintComponent(gc); // appel m�thode m�re (efface le dessin pr�cedent)
-		//gc.drawRect(1,1,2,2);
 		if(!clicked) {
 			BufferedImage image;
 			try {
@@ -51,9 +50,7 @@ class Case extends JPanel implements MouseListener{
 				System.out.println("There is no such image file");
 				e.printStackTrace();
 			}
-			//gc.setColor(new Color(128,158,158)); // grey 
-			//this.setBackground(couleurFOnd);
-			//gc.fillRect(2, 2, getWidth(), getHeight());
+			
 		}else {
 			
 			
@@ -89,7 +86,6 @@ class Case extends JPanel implements MouseListener{
 					}
 					
 					
-					//gc.drawString(String.valueOf(demin.getChamp().nbr_mines(x,y)),getWidth()/2,getHeight()/2);
 
 				}
 			}
@@ -125,9 +121,7 @@ class Case extends JPanel implements MouseListener{
 			demin.getDos().writeInt(y);
 			demin.getDos().writeUTF(demin.getPseudo());
 			demin.getDos().writeInt(demin.getColorInt());
-			//demin.getDos().writeInt(demin.getNumeroClient());
-			//demin.getDos().writeInt(demin.getColorInt());
-
+		
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
@@ -160,12 +154,21 @@ class Case extends JPanel implements MouseListener{
 					// TODO Auto-generated catch block
 					e1.printStackTrace();
 				}
+				 demin.addScorehmOnline(this.demin.getChamp().getNiveau(),this.demin.Get_nbr_cases_decouvertes());
+				 System.out.println(this.demin.getChamp().getNiveau().name());
+				 demin.saveScore();
 
-			}
+			
+				 }
+			
 			JOptionPane.showMessageDialog(null, "You lost !!! Your score is "+String.valueOf(demin.Get_nbr_cases_decouvertes())+" boxes found with Time: "+String.valueOf(demin.getGui().getCompteur().GetCounter())+" seconds");
 
 			demin.setLost(true);
-			
+			if(!demin.getConnected()){
+				demin.addScorehmOffline(this.demin.getChamp().getNiveau(),this.demin.Get_nbr_cases_decouvertes());
+				demin.saveScore();
+
+			}
 			
 			demin.getGui().getCompteur().stopCpt();
 

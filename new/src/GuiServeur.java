@@ -69,11 +69,11 @@ public class GuiServeur extends JPanel implements ActionListener {
 					this.serveur.getListOut().get(clientOut).writeInt(2);//Commande start
 					serveur.getListOut().get(clientOut).writeInt(sizeX);
 					serveur.getListOut().get(clientOut).writeInt(sizeY);
-					
+					serveur.getListOut().get(clientOut).writeUTF(serveur.getChamp().getNiveau().name());
+					System.out.println("From GuiServeur "+serveur.getChamp().getNiveau().name());
 					for(int i=0;i<sizeX;i++)
 						for(int j=0;j<sizeY;j++)
 							serveur.getListOut().get(clientOut).writeBoolean(serveur.getChamp().getTab()[i][j]);
-			//Serveur.getChamp().getTab
 
 
 				} catch (IOException e1) {

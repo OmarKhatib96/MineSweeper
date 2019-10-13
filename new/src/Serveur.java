@@ -37,7 +37,6 @@ public class Serveur extends JFrame implements Runnable{
 	ServerSocket serversocket ;
 	private GuiServeur gui;
 	List<Socket> listSocket = new ArrayList<Socket>();
-	//HashMap<String ,Socket > listClients=new HashMap<String ,Socket >();
 	ArrayList<User> listClients=new ArrayList<User>();
 	public    Champ champ=new Champ("Mineur game", new Level(lvl.MEDIUM));
     
@@ -109,9 +108,7 @@ public void startServer() {
 	
 	try {
 	gui.addMsg("Attente des clients");
-	 serversocket=new  ServerSocket(Demineur.PORT);
-
-	//List<Socket> listSocket = new ArrayList<Socket>();
+	serversocket=new  ServerSocket(Demineur.PORT);
 	new Thread(this).start();
 
 	
@@ -149,15 +146,9 @@ public void run(){
 	hmClientIn.put(pseudoClient, dis);
 	hmClientOut.put(pseudoClient, dos);
 	hmClientSocket.put(pseudoClient, socket);
-
-	//listIn.add(nombreClients,dis);
-	//listOut.add(nombreClients,dos);
-
-	//dos.writeInt(nombreClients);//Lui envoyer son numéro client
 	listPlayers.add(pseudoClient);
 	nombreClients++;
 	System.out.println("Numéro" +nombreClients);
-	//dos.writeInt(nombreClients);
 
 
 	while(t!=null) {//While the server thread is not  over
@@ -205,8 +196,7 @@ public void run(){
 							dos1.writeInt(y);
 							dos1.writeUTF(NomJoueur);
 							dos1.writeInt(color);
-							//dos1.writeInt(numeroJoueur);
-							//dos1.writeInt(colorClient);
+							
 							
 						}
 					
@@ -231,13 +221,14 @@ public void run(){
 			 int time=dis.readInt();
 			 int score=dis.readInt();
 			 int colorClient=dis.readInt();
-			 //int numeroClient=dis.readInt();
 			 String message;
 			 // TODO: Ajouter son score dans le fichier
 			 if(lostPlayer)//Si le joueur a perdu
 			{
 				
 				 message="The player "+playerWhoLost+" has lost the game!\n";
+				 nombreClients--;
+
 			}
 
 			else {//Si le jouer s'est déconnecté 
@@ -249,12 +240,20 @@ public void run(){
 				 listOut.remove(outPlayerToRemove);
 				 listSocket.remove(hmClientSocket.get(playerWhoLost));
 				System.out.println("Removal done!\n");
-				 //this.listSocket.remove(numeroClient);
 		}
-				nombreClients--;
 
 				if(nombreClients==0){
-
+						
+				for(int client=0;client<this.listSocket.size();client++) {//Diffuser aux autre clients
+					
+					
+					DataOutputStream dos1 = new DataOutputStream(listSocket.get(client).getOutputStream());
+					dos1.writeInt(3);
+					dos1.writeInt(colorClient);
+					//dos1.writeUTF("Partie terminée!");
+					
+					
+				}
 					//TODO Afficher le score
 				}
 
