@@ -40,6 +40,9 @@ public class Compteur extends JPanel implements Runnable {
 		
 	}
 	
+	/**
+	 * Permet de lancer le compteur
+	 */
 	public void startCpt(){
 		//counter=0;
 		processScores=new Thread(this);
@@ -50,7 +53,9 @@ public class Compteur extends JPanel implements Runnable {
 		
 	}
 	
-	
+	/**
+	 * Permet de stopper le compteur
+	 */
 	public void stopCpt(){
 		processScores=null;
 
@@ -60,6 +65,9 @@ public class Compteur extends JPanel implements Runnable {
 		
 	}
 	
+	/**
+	 * Constructeur par défaut du compteur
+	 */
 	Compteur(){
 		processScores=new Thread(this);
 		setPreferredSize(new Dimension(WIDTH,HEIGHT));

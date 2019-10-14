@@ -1,5 +1,7 @@
 
-
+/*
+ * Enumération des différents niveaux disponibles
+ */
  enum lvl {
 	    EASY,
 	    MEDIUM,

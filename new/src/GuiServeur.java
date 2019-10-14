@@ -66,7 +66,7 @@ public class GuiServeur extends JPanel implements ActionListener {
 		
 		if(e.getSource()==startBut ) 
 		{
-			String choice=c.getItem(c.getSelectedIndex());
+			String choice=c.getItem(c.getSelectedIndex());//Récupérer le niveau choisi
 			if(choice.equals("EASY"))
 				serveur.setChamp(new Champ("Mineur game", new Level(lvl.EASY)));
 

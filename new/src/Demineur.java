@@ -34,9 +34,21 @@ public class Demineur extends JFrame implements Runnable {
 	private static Level lev;
 	public static final int PORT = 1000;
 	public static final String HOSTNAME = "localhost";
+	/*
+	 * Pseudo par défaut du client
+	 */
 	public static String PSEUDO = "Omar";
+	/*
+	 * Commande pour envoyer un message
+	 */
 	public static final int MSG = 0;
+	/*
+	 * Commande pour recevoir une position
+	 */
 	public static final int POS = 1;
+	/*
+	 * Commande pour envoyer le signal start
+	 */
 	public static final int START = 2;
 	public static final int LOST = 10;
 
@@ -44,27 +56,48 @@ public class Demineur extends JFrame implements Runnable {
 	public static final int IDLE = 4;
 	public static final int GETPSEUDO = 5;
 
+	/*
+	 * 
+	 */
 	private boolean champRecu = false;
+	/*
+	 * Couleur associée au client
+	 */
 	private Color color;
 	private int numeroClient = 0;
 	private int cmd;
 	private boolean connected = false;
 	public static int increment = 0;
+	/*
+	 * Champ de message pour chaque client
+	 */
 	private JTextField inputTextField;// For each client
 	private static Champ champ;
 	private boolean solo = false;
 	private static int nbr_cases_decouvertes = 0;
+	/*
+	 * mis à true si la partie a commencé
+	 */
 	private boolean started = false;
 	private static IHMHello gui;
 	private boolean lost = false;
 	private Thread process;
 	private DataInputStream in;
 	private DataOutputStream out;
-	private HashMap<lvl, Integer> hmScoresOnline = new HashMap<lvl, Integer>();
-	private HashMap<lvl, Integer> hmScoresOffline = new HashMap<lvl, Integer>();
+	/*
+	 * Hashmap pour stocker les scores du mode en ligne
+	 */
+	private HashMap<lvl, Integer> hmScoresOnline = new HashMap<lvl, Integer>();//Hashmap pour stocker les scores du mode en ligne
+	/*
+	 * Pour stocker les scores en mode  hors ligne
+	 */
+	private HashMap<lvl, Integer> hmScoresOffline = new HashMap<lvl, Integer>();////Hashmap pour stocker les scores du mode hors ligne
 
 	Socket sock;
 
+	/*
+	 * Retourne le nombre de cases découvertes par le joueur
+	 */
 	public int Get_nbr_cases_decouvertes() {
 		return nbr_cases_decouvertes;
 
@@ -80,16 +113,25 @@ public class Demineur extends JFrame implements Runnable {
 		nbr_cases_decouvertes = 0;
 	}
 
+	/**
+	 * Permet de retourrner le champ de saisi du message pour chaque client
+	 */
 	public JTextField getTextField() {
 
 		return inputTextField;
 	}
 
+	/**
+	 * Permet d'obtenir le socket du client
+	 */
 	public Socket getSocket() {
 
 		return sock;
 	}
 
+	/**
+	 * Récupère le pseudo du client
+	 */
 	public String getPseudo() {
 
 		return PSEUDO;
@@ -100,10 +142,9 @@ public class Demineur extends JFrame implements Runnable {
 		PSEUDO = nickname;
 	}
 
-	public void setCmd(int cmd) {
-		this.cmd = cmd;
-	}
-
+/**
+ * Permet d'obtenir le statut de connexion du client(s'il est connecté ou pas)
+ */
 	public boolean getConnected() {
 
 		return connected;
@@ -111,8 +152,12 @@ public class Demineur extends JFrame implements Runnable {
 
 	public void run() {
 
+		/**
+		 * Tant que le thread n'est pas mort 
+		 */
 		while (process != null && connected) {// boucle "infini"
 			try {
+				
 				cmd = in.readInt();
 			} catch (IOException e1) {
 				// TODO Auto-generated catch block
@@ -131,7 +176,7 @@ public class Demineur extends JFrame implements Runnable {
 					e.printStackTrace();
 				} // veut dire qu'on va recevoir un message
 
-				System.out.println("Message sent successfully");// veut dire
+				System.out.println("Message sent successfully");// v
 			}
 
 			if (cmd == Demineur.POS) {
@@ -152,7 +197,6 @@ public class Demineur extends JFrame implements Runnable {
 
 			if (cmd == Demineur.END) {
 					System.out.println("Partie terminée!");
-					//System.out.println("After the save score function!");
 
 					int color;
 				try {
@@ -167,9 +211,8 @@ public class Demineur extends JFrame implements Runnable {
 
 			}
 
-			if (cmd == Demineur.START) {
+			if (cmd == Demineur.START) {//Si on reçoit le signal de start de la part du serveur
 				try {
-					// Level l=new Level(lvl.EASY);
 
 					gui.repaint();
 					gui.getCompteur().stopCpt();
@@ -190,7 +233,6 @@ public class Demineur extends JFrame implements Runnable {
 						System.out.println("Level set to Medium");
 					}
 
-
 					if(niveauServeur.equals("HARD"))
 						champ.setNiveau(lvl.HARD);
 
@@ -205,9 +247,9 @@ public class Demineur extends JFrame implements Runnable {
 						}
 					}
 
-					gui.resetPanelMines();
+					gui.resetPanelMines();//Réinitialise le panel mines
 					gui.placeCases();
-					champ.affText();
+					champ.affText();//Affiche le champ
 					champRecu = true;
 					System.out.println(champ.getNiveau().name());
 
@@ -223,11 +265,17 @@ public class Demineur extends JFrame implements Runnable {
 
 	}
 
+	/**
+	 * Récupère le DataOutPutStream du client
+	 */
 	public DataOutputStream getDos() {
 
 		return out;
 	}
 
+	/**
+	 * Récupère le DataInPutStream du client
+	 */
 	public DataInputStream getDis() {
 
 		return in;
@@ -243,6 +291,7 @@ public class Demineur extends JFrame implements Runnable {
 
 	}
 
+	
 	public int getColorInt() {
 
 		return color.getRGB();
@@ -252,29 +301,10 @@ public class Demineur extends JFrame implements Runnable {
 		return numeroClient;
 	}
 
-	public void readMessage() {
 
-		Thread readMessage = new Thread(new Runnable() {
-
-			@Override
-			public void run() {
-
-				while (true) {
-					try {
-						// read the message sent to this client
-						String msg = in.readUTF();
-						System.out.println(msg);
-					} catch (IOException e) {
-
-						e.printStackTrace();
-					}
-				}
-			}
-		});
-		readMessage.start();
-
-	}
-
+	/**
+	 * Permet la déconnexion du client
+	 */
 	public void disconnect() {
 
 		try {
@@ -288,7 +318,10 @@ public class Demineur extends JFrame implements Runnable {
 		}
 
 	}
-
+	/**
+	 * Permet la connexion du client au serveur
+	 */
+	
 	public void Connect2Server(String HostField, int PortField, String PseuField) {
 		System.out.println("Try to connect to:" + HostField + ":" + PortField);
 		try {
@@ -319,16 +352,25 @@ public class Demineur extends JFrame implements Runnable {
 		nbr_cases_decouvertes = 0;
 	}
 
+	/**
+	 * Ajoute le score du client à la HashMap en mode en ligne
+	 */
 	public void addScorehmOnline(lvl l, int score) {
 		hmScoresOnline.put(l, score);
 
 	}
 
+	/**
+	 * Ajoute le score du client à la HashMap en mode hors ligne
+	 */
 	public void addScorehmOffline(lvl l, int score) {
 		hmScoresOffline.put(l, score);
 
 	}
-
+/**
+ * Permet de dire si le client a gagné ou pas
+ */
+	
 	public boolean isWin() {
 		boolean win = nbr_cases_decouvertes + champ.getNbMines() == champ.getDimensionX() * champ.getDimensionY();
 		if (win)
@@ -336,10 +378,12 @@ public class Demineur extends JFrame implements Runnable {
 		return win;
 	}
 
-
+/**
+ * Permet de sauvegarder les score en mode en ligne et en mode hors ligne
+ */
 
 	public void saveScore() {
-		if (connected) {// Si on n'est en mode multijoueur
+		if (connected) {// Si on est en mode multijoueur
 			for (lvl niveau : lvl.values()) { //Pour créer les fichiers s'ils n'existent pas
 		
 		
@@ -356,7 +400,7 @@ public class Demineur extends JFrame implements Runnable {
 
 				}
 
-						hmScoresOnline.forEach((key,value) -> {
+						hmScoresOnline.forEach((key,value) -> {//Pour chaque joueur on va stocker les scores
 
 							try 
 							{
@@ -377,7 +421,7 @@ public class Demineur extends JFrame implements Runnable {
 
 	
 
-			else
+			else//Pour le mode hors-ligne
 			 {for (lvl niveau : lvl.values()) { 
 		
 				
@@ -420,7 +464,7 @@ public class Demineur extends JFrame implements Runnable {
 
 	
 	public void set_nbr_cases_decouvertes(int nbr_cases) {
-		nbr_cases_decouvertes=nbr_cases;//reset when new game
+		nbr_cases_decouvertes=nbr_cases;
 		
 	}
 	
@@ -462,6 +506,9 @@ public boolean isStarted() {return started;}
 		
 		this.started=started;
 	}
+	/**
+	 * Constructeur de la classe démineur
+	 */
 	public  Demineur(String name,Level lv)//Constructeur surcharg�
 	{
 		
@@ -503,6 +550,9 @@ public boolean isStarted() {return started;}
 	
     }
     
+    /**
+     * Permet de génèrer une couleur aléatoire
+     */
   void setRandomColor() {
 	  
 	  Random rand=new Random();

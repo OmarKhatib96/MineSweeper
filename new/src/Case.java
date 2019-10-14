@@ -14,14 +14,32 @@ import java.awt.Color;
 
 class Case extends JPanel implements MouseListener{
 	private String txt = "X";
+	/**
+	 * Dimension de la case
+	 */
 	private final static int DIM=5 ;
+	/**Coordonée x de la case
+	 * 
+	 */
 	private int x;
+	/**
+	 * Coordonnée y de la cases
+	 */
 	private int y;
 	private Demineur demin;
-	private boolean clicked=false;//10/07/2019
+	private boolean clicked=false;
 	
+	/**
+	 * Couleur de bord de la case
+	 */
 	private Color couleurBord=new Color(60,60,100);
 
+	/**
+	 * Constructeur par défaut de la case
+	 * @param x coordonnée x
+	 * @param y coordonnée y
+	 * @param Demin
+	 */
 	public Case (int x, int y,Demineur Demin) {//passer position
 		this.x=x;
 		this.y=y;
@@ -105,6 +123,9 @@ class Case extends JPanel implements MouseListener{
 	}
 
 	@Override
+	/**
+	 * Si on appuie sur le bouton de la souris (sur une case)
+	 */
 	public void mouseClicked(MouseEvent e) {
 		
 	

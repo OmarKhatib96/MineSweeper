@@ -25,16 +25,33 @@ import java.awt.GridBagLayout;
 
 
 public class Serveur extends JFrame implements Runnable{	
+	/**
+	 * Matrice de booléens qui précise si une case a déjà été découverte par un client ou pas
+	 */
 	private boolean [][] caseDiscovered;
+	/**
+	 * List contenant les datainputstream de tous les clients
+	 */
     private List<DataInputStream> listIn = new ArrayList<DataInputStream>();
+    /**
+     * List contenant les dataoutputstream de tous les clients
+     */
     private  List<DataOutputStream> listOut = new ArrayList<DataOutputStream>();
+    /**
+     * Hashmap contenant les map<Pseudo,DatainputStream> de tous les clients
+     */
 	private HashMap<String,DataInputStream> hmClientIn=new  HashMap<String,DataInputStream>();
+	/**
+     * Hashmap contenant les map<Pseudo,DataoutputStream> de tous les clients
+     */
 	private HashMap<String,DataOutputStream> hmClientOut=new  HashMap<String,DataOutputStream>();
+	/**
+     * Hashmap contenant les map<Pseudo,Socket> de tous les clients
+     */
 	private HashMap<String,Socket> hmClientSocket=new HashMap<String,Socket>();
 	ServerSocket serversocket ;
 	private GuiServeur gui;
 	List<Socket> listSocket = new ArrayList<Socket>();
-	ArrayList<User> listClients=new ArrayList<User>();
 	public    Champ champ=new Champ("Mineur game", new Level(lvl.MEDIUM));//Champ par défaut  
 	private int nombreClients=0;	
 	private List<String> listPlayers=new ArrayList<String>();
@@ -67,23 +84,24 @@ public void setChamp(Champ newChamp){
 		
 	}
 
-	public void resetCaseDiscovered(){
-		caseDiscovered=new boolean[champ.getDimensionX()][champ.getDimensionY()];
+	/**
+	 * Permet de réinitialiser la matrice des cases découvertes
+	 */
+	public void resetCaseDiscovered(){//Réinitialise le tableau des booléens
+		caseDiscovered=new boolean[champ.getDimensionX()][champ.getDimensionY()];//On en génère un nouveau
 		for(int i=0;i<champ.getDimensionX();i++)
 		for(int j=0;j<champ.getDimensionY();j++)
 			caseDiscovered[i][j]=false;
 
 	}
+	
 	public static void main(String[] args) {
 		
 		new Serveur();
 	}
 
 		
-public void AddClient(User client) {
-	
-	listClients.add(client);
-}
+
 	
 public List<DataOutputStream>  getListOut(){
 	
@@ -101,12 +119,11 @@ return  listIn;
 
 
 
-public  ArrayList<User> listClients(){
-	
-	
-	return listClients;
-}
 
+
+/**
+ * Permet de lancer le serveur et d'attente les éventuels clients
+ */
 public void startServer() {
 	
 	try {
@@ -123,7 +140,10 @@ public void startServer() {
 
 }
 
-
+/**
+ * Sert à acceuillir les clients entrants,à coordonner les différentes opérations(envoi des messages, des positions...)
+ * 
+ */
 public void run(){
 	
 	
@@ -132,7 +152,7 @@ public void run(){
 	Socket socket =serversocket.accept();	
 	Thread t =new Thread(this);
 	t.start();//Dans un thread à part 
-	this.listSocket.add(socket);//add the new incoming client
+	this.listSocket.add(socket);//accepte un nouveau client(socket)
 	DataInputStream dis = new DataInputStream(socket.getInputStream());
 	DataOutputStream dos = new DataOutputStream(socket.getOutputStream());
 	//Add to the collection
@@ -152,12 +172,13 @@ public void run(){
 	nombreClients++;
 	System.out.println("Numéro" +nombreClients);
 
-
+/**
+ * Tant que le thread du serveur n'est pas mort
+ */
 	while(t!=null) {//While the server thread is not  over
 		
 		int cmd=dis.readInt();
 
-		
 		if(cmd==0) {//Pour envoyer un message
 		int couleurClient=dis.readInt();
 		String message=dis.readUTF();//receive messages from the IHM
@@ -184,7 +205,6 @@ public void run(){
 			int y=dis.readInt();
 			String NomJoueur=dis.readUTF();
 			int color=dis.readInt();
-			//int numeroJoueur=dis.readInt();
 			System.out.println(x+" "+y+" "+ NomJoueur);
 			if(!caseDiscovered[x][y]) {
 				caseDiscovered[x][y]=true;
@@ -210,10 +230,6 @@ public void run(){
 			
 		}
 		
-		if(cmd==2) {
-			
-			//TODO end serveur et end game
-		}
 		
 		if(cmd==10)
 		{
