@@ -5,8 +5,6 @@ Minesweeper game with online multiplaying option
 
 
 
-visualization.
-
 ## Software Requirements
 
 
@@ -17,9 +15,7 @@ A java environement  is required to play the game
 
 ## Installation
 Download the zip folder from the repository and extract the files.
-```bash
-pip3 install -i https://test.pypi.org/simple/ package-visualization-tool-PE-emse2020==0.0.4
-```
+
 
 ## Usage
 
@@ -29,10 +25,12 @@ javac Serveur.java
 java Serveur
 
 ```
+
 2-Open a new terminal and run the following lines to start playing:
+```
 javac Demineur.java
 java Demineur
-'''
+```
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
